@@ -49,9 +49,7 @@ public class LogToHbaseMapper extends Mapper<Object, Text, NullWritable, Put> {
             default:
                 this.filterRecords++;
                 logger.warn("该事件的诗句暂时不支持处理,事件为:" + eventName);
-
         }
-
     }
 
     /**
