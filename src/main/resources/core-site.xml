@@ -38,10 +38,10 @@
     <!--<value>*</value>-->
     <!--</property>-->
 
-    <property>
-        <name>mapreduce.app-submission.cross-platform</name>
-        <value>false</value>
-        <!--本地false,服务端true-->
-    </property>
+    <!--<property>-->
+    <!--<name>mapreduce.app-submission.cross-platform</name>-->
+    <!--<value>false</value>-->
+    <!--&lt;!&ndash;本地false,服务端true&ndash;&gt;-->
+    <!--</property>-->
 
 </configuration>

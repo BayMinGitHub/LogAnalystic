@@ -133,12 +133,17 @@ public class LogToHbaseRunner implements Tool {
     private void setInputPath(Job job) {
         String date = job.getConfiguration().get(GlobalConstants.RUNNING_DATE);
         String[] fields = date.split("-");
-        Path inputPath = new Path("hdfs://hadoop010:9000/flume/events/0" + fields[1] + "-" + fields[2]);
+        Path inputPath = new Path("/flume/events/" + fields[1] + "-" + fields[2]);
+        // TODO 注意此处文件路径!!
+        // TODO 由于Windows的原因个位数的月份不带0,因此在Windows系统中运行时,拼接字符串中多加一个0,但是上传到服务端时,这个0需要去掉
+        // Path inputPath = new Path("/flume/events/0" + fields[1] + "-" + fields[2]);
+
         try {
             FileSystem fs = FileSystem.get(conf);
             if (fs.exists(inputPath)) {
                 FileInputFormat.addInputPath(job, inputPath);
             } else {
+                logger.warn("路径为:" + inputPath.toString());
                 throw new RuntimeException("输入路径不存在");
             }
         } catch (IOException e) {
