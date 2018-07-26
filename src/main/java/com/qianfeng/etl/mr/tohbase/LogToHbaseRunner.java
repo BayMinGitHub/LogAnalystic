@@ -51,7 +51,7 @@ public class LogToHbaseRunner implements Tool {
     /**
      * yarn jar /xxx/xxx.jar com.qianfneg.etl.mr.tohbase.LogToHbaseRunner -d 2018-7-26
      *
-     * @param args /flume/events/date/xxx
+     * @param args
      */
     @Override
     public int run(String[] args) throws Exception {

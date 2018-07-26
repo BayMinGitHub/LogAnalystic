@@ -44,6 +44,7 @@
     <!--打包-->
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -52,9 +53,8 @@
 
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.3</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -64,7 +64,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -75,7 +75,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>cz.mallat.uasparser:uasparser</include>
-                                    <include>com.alibaba:fastjson</include>
                                     <include>net.sourceforge.jregex:jregex</include>
                                 </includes>
                             </artifactSet>
