@@ -89,26 +89,29 @@ public class LogUtil {
         if (info.containsKey(EventLogConstants.EVENT_COLUMN_NAME_USERAGENT)) {
             UserAgentUtil.UserAgentInfo userAgentInfo = new UserAgentUtil().parserUserAgent(info.get(EventLogConstants.EVENT_COLUMN_NAME_USERAGENT));
             if (userAgentInfo != null) {
-                if (userAgentInfo.getBrowserName() != null)
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, userAgentInfo.getBrowserName());
-                else
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, "unknown");
-
-                if (userAgentInfo.getBrowserVersion() != null)
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION, userAgentInfo.getBrowserVersion());
-                else
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION, "unknown");
-
-                if (userAgentInfo.getOsName() != null)
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_NAME, userAgentInfo.getOsName());
-                else
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_NAME, "unknown");
-
-                if (userAgentInfo.getOsVersion() != null)
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION, userAgentInfo.getOsVersion());
-                else
-                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION, "unknown");
-
+                info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, userAgentInfo.getBrowserName());
+                info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION, userAgentInfo.getBrowserVersion());
+                info.put(EventLogConstants.EVENT_COLUME_NAME_OS_NAME, userAgentInfo.getOsName());
+                info.put(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION, userAgentInfo.getOsVersion());
+//                if (userAgentInfo.getBrowserName() != null)
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, userAgentInfo.getBrowserName());
+//                else
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, "unknown");
+//
+//                if (userAgentInfo.getBrowserVersion() != null)
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION, userAgentInfo.getBrowserVersion());
+//                else
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION, "unknown");
+//
+//                if (userAgentInfo.getOsName() != null)
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_NAME, userAgentInfo.getOsName());
+//                else
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_NAME, "unknown");
+//
+//                if (userAgentInfo.getOsVersion() != null)
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION, userAgentInfo.getOsVersion());
+//                else
+//                    info.put(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION, "unknown");
             }
         }
     }

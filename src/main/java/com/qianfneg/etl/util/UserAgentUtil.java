@@ -41,6 +41,11 @@ public class UserAgentUtil {
                 info.setBrowserVersion(ua.getBrowserVersionInfo());
                 info.setOsName(ua.getOsName());
                 info.setOsVersion(ua.getOsFamily());
+            } else {
+                info.setBrowserName("unknown");
+                info.setBrowserVersion("unknown");
+                info.setOsName("unknown");
+                info.setOsVersion("unknown");
             }
         } catch (IOException e) {
             logger.warn("useragent解析异常");
