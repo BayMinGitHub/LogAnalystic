@@ -102,7 +102,7 @@ public class IpParserUtil extends IPSeeker {
                     }
                 }
             }
-            if (info.getCity() == info.getDEFAULT_VALUE())
+            if (info.getProvince() == info.getDEFAULT_VALUE())
                 info.setCountry(country);
         } catch (Exception e) {
             logger.warn("解析ip工具方法异常");
