@@ -87,7 +87,7 @@ public class LogUtil {
      */
     private void handleUserAgent(Map<String, String> info) {
         if (info.containsKey(EventLogConstants.EVENT_COLUMN_NAME_USERAGENT)) {
-            UserAgentUtil.UserAgentInfo userAgentInfo = new UserAgentUtil().parserUserAgent(EventLogConstants.EVENT_COLUMN_NAME_USERAGENT);
+            UserAgentUtil.UserAgentInfo userAgentInfo = new UserAgentUtil().parserUserAgent(info.get(EventLogConstants.EVENT_COLUMN_NAME_USERAGENT));
             if (userAgentInfo != null) {
                 if (userAgentInfo.getBrowserName() != null)
                     info.put(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME, userAgentInfo.getBrowserName());
