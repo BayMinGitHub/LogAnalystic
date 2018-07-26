@@ -16,6 +16,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.log4j.Logger;
 
@@ -28,6 +29,14 @@ import java.io.IOException;
 public class LogToHbaseRunner implements Tool {
     private static final Logger logger = Logger.getLogger(LogToHbaseRunner.class);
     Configuration conf = null;
+
+    public static void main(String[] args) {
+        try {
+            ToolRunner.run(new Configuration(), new LogToHbaseRunner(), args);
+        } catch (Exception e) {
+            logger.error("执行job主方法失败.", e);
+        }
+    }
 
     @Override
     public void setConf(Configuration conf) {
@@ -123,8 +132,8 @@ public class LogToHbaseRunner implements Tool {
      */
     private void setInputPath(Job job) {
         String date = job.getConfiguration().get(GlobalConstants.RUNNING_DATE);
-        String[] fields = date.split("_");
-        Path inputPath = new Path("/flume/events/" + fields[1] + fields[2]);
+        String[] fields = date.split("-");
+        Path inputPath = new Path("hdfs://hadoop010:9000/flume/events/" + fields[1] + "-" + fields[2]);
         try {
             FileSystem fs = FileSystem.get(conf);
             if (fs.exists(inputPath)) {
