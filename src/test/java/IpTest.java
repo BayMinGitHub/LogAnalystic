@@ -1,5 +1,5 @@
-import com.qianfneg.etl.util.IpParserUtil;
-import com.qianfneg.etl.util.ip.IPSeeker;
+import com.qianfeng.etl.util.IpParserUtil;
+import com.qianfeng.etl.util.ip.IPSeeker;
 
 import java.util.List;
 

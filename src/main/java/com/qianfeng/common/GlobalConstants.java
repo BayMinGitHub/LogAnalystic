@@ -1,4 +1,4 @@
-package com.qianfneg.common;
+package com.qianfeng.common;
 
 /**
  * @Description: 全局常量类

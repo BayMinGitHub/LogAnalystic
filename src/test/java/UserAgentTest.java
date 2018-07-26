@@ -1,4 +1,4 @@
-import com.qianfneg.etl.util.UserAgentUtil;
+import com.qianfeng.etl.util.UserAgentUtil;
 
 /**
  * @Description: 浏览器信息解析测试类

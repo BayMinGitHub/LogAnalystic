@@ -1,8 +1,8 @@
-package com.qianfneg.etl.mr.tohbase;
+package com.qianfeng.etl.mr.tohbase;
 
-import com.qianfneg.common.EventLogConstants;
-import com.qianfneg.common.GlobalConstants;
-import com.qianfneg.util.TimeUtil;
+import com.qianfeng.common.EventLogConstants;
+import com.qianfeng.common.GlobalConstants;
+import com.qianfeng.util.TimeUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -133,13 +133,13 @@ public class LogToHbaseRunner implements Tool {
     private void setInputPath(Job job) {
         String date = job.getConfiguration().get(GlobalConstants.RUNNING_DATE);
         String[] fields = date.split("-");
-        Path inputPath = new Path("hdfs://hadoop010:9000/flume/events/" + fields[1] + "-" + fields[2]);
+        Path inputPath = new Path("hdfs://hadoop010:9000/flume/events/0" + fields[1] + "-" + fields[2]);
         try {
             FileSystem fs = FileSystem.get(conf);
             if (fs.exists(inputPath)) {
                 FileInputFormat.addInputPath(job, inputPath);
             } else {
-                throw new RuntimeException("输出路径不存在");
+                throw new RuntimeException("输入路径不存在");
             }
         } catch (IOException e) {
             logger.warn("获取fs对象异常!", e);

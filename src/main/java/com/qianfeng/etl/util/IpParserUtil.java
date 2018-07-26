@@ -1,7 +1,7 @@
-package com.qianfneg.etl.util;
+package com.qianfeng.etl.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qianfneg.etl.util.ip.IPSeeker;
+import com.qianfeng.etl.util.ip.IPSeeker;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;

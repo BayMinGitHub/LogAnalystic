@@ -1,6 +1,6 @@
-package com.qianfneg.etl.util;
+package com.qianfeng.etl.util;
 
-import com.qianfneg.common.EventLogConstants;
+import com.qianfeng.common.EventLogConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ public class LogUtil {
     private static final Logger logger = Logger.getLogger(LogUtil.class);
 
     /**
-     * 192.168.216.120^A1532576375^A192.168.216.120^A/index.html?ver=1.0&u_mid=123&en=e_cr&c_time=1532576375614&
+     * 192.168.216.111^A1532576375.965^A192.168.216.111^A/index.html?ver=1.0&u_mid=123&en=e_cr&c_time=1532576375614&
      * ip:192.168.216.120
      * s_time:1532576375614
      * ver:1.0

@@ -1,4 +1,4 @@
-package com.qianfneg.etl.util;
+package com.qianfeng.etl.util;
 
 import cz.mallat.uasparser.OnlineUpdater;
 import cz.mallat.uasparser.UASparser;

@@ -1,4 +1,4 @@
-package com.qianfneg.util;
+package com.qianfeng.util;
 
 import org.apache.log4j.Logger;
 

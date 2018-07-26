@@ -1,7 +1,7 @@
-package com.qianfneg.etl.mr.tohbase;
+package com.qianfeng.etl.mr.tohbase;
 
-import com.qianfneg.common.EventLogConstants;
-import com.qianfneg.etl.util.LogUtil;
+import com.qianfeng.common.EventLogConstants;
+import com.qianfeng.etl.util.LogUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -27,7 +27,7 @@ public class LogToHbaseMapper extends Mapper<Object, Text, NullWritable, Put> {
     @Override
     protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         this.inputRecords++;
-        logger.info("输出的日志为:" + value.toString());
+        logger.info("输入的日志为:" + value.toString());
         Map<String, String> info = new LogUtil().parserLog(value.toString());
         if (info.isEmpty()) {
             this.filterRecords++;

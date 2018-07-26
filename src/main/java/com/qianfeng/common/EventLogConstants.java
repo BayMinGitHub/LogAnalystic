@@ -1,4 +1,4 @@
-package com.qianfneg.common;
+package com.qianfeng.common;
 
 /**
  * @Description: 定义采集的数据中相对应的key
