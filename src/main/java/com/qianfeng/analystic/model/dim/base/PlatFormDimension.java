@@ -18,7 +18,6 @@ public class PlatFormDimension extends BaseDimension {
     private String platformName;
 
     public PlatFormDimension() {
-
     }
 
     public PlatFormDimension(String platformName) {

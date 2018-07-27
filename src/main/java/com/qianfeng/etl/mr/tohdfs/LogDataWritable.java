@@ -265,8 +265,8 @@ public class LogDataWritable implements Writable {
         return oid;
     }
 
-    public void setOid(String oid) {
-        this.oid = oid;
+    public void setOid(String o_id) {
+        this.oid = o_id;
     }
 
     public String getOn() {

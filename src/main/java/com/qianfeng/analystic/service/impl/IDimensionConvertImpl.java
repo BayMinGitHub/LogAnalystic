@@ -48,8 +48,7 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             sql = this.buildBrowserSql();
         else if (baseDimension instanceof KpiDimension)
             sql = this.buildKpiSql();
-
-        Connection conn = null;
+        Connection conn = JDBCUtil.getConn();
         int id = -1;
         synchronized (this) {
             id = this.execute(sql, baseDimension, conn);
@@ -70,7 +69,7 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             rs = ps.executeQuery();
             if (rs.next())
                 return rs.getInt("id");
-            // 如果代码走到这里说明没有传到,然后准备插入再取值
+            // 如果代码走到这里说明没有查询到,然后准备插入再取值
             ps = conn.prepareStatement(sql[1], Statement.RETURN_GENERATED_KEYS); // 返回生成的Key
             this.setArgs(baseDimension, ps);
             ps.executeUpdate(); // 返回影响的函数
@@ -88,7 +87,6 @@ public class IDimensionConvertImpl implements IDimensionConvert {
     /**
      * 设置参数
      */
-
     private void setArgs(BaseDimension baseDimension, PreparedStatement ps) {
         try {
             int i = 0;

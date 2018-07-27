@@ -97,9 +97,6 @@ public class LogToHDFSRunner implements Tool {
         String[] fields = date.split("-");
         Path inputPath = new Path("/flume/events/" + fields[1] + "-" + fields[2]);
         Path outputPath = new Path("/ods/month" + fields[1] + "/day" + fields[2]);
-        // TODO 注意此处文件路径!!
-        // TODO 由于Windows的原因个位数的月份不带0,因此在Windows系统中运行时,拼接字符串中多加一个0,但是上传到服务端时,这个0需要去掉
-        // Path inputPath = new Path("/flume/events/0" + fields[1] + "-" + fields[2]);
         try {
             fs = FileSystem.get(conf);
             if (fs.exists(inputPath))

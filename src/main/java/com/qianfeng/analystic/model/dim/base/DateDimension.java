@@ -21,7 +21,7 @@ public class DateDimension extends BaseDimension {
     private int week;
     private int day;
     private Date calendar = new Date();
-    private String type;
+    private String type; // 什么类型的指标
 
     public DateDimension() {
     }

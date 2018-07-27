@@ -9,7 +9,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * @Description: 将常用的维度类封装起来
+ * @Description: 公共维度的封装(平台和时间维度)
  * Author by BayMin, Date on 2018/7/27.
  */
 public class StatsCommonDimension extends StatsBaseDimension {
@@ -51,9 +51,8 @@ public class StatsCommonDimension extends StatsBaseDimension {
 
     @Override
     public int compareTo(StatsBaseDimension o) {
-        if (this == o) {
+        if (this == o)
             return 0;
-        }
         StatsCommonDimension other = (StatsCommonDimension) o;
         int tmp = this.dateDimension.compareTo(other.dateDimension);
         if (tmp != 0)
