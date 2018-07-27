@@ -1,5 +1,6 @@
 package com.qianfeng.util;
 
+import com.qianfeng.common.DateEnum;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -79,6 +80,17 @@ public class TimeUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp); // 毫秒
         return new SimpleDateFormat(format).format(calendar.getTime());
+    }
+
+    /**
+     * 根据时间戳和
+     */
+    public static int getDateInfo(Long timestamp, DateEnum type) {
+        return 0;
+    }
+
+    public static long getFirstDayOfWeek(Long timestamp) {
+        return 0;
     }
 
     /**

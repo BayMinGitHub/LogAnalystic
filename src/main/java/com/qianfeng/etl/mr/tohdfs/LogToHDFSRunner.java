@@ -1,45 +1,40 @@
-package com.qianfeng.etl.mr.tohbase;
+package com.qianfeng.etl.mr.tohdfs;
 
-import com.qianfeng.common.EventLogConstants;
 import com.qianfeng.common.GlobalConstants;
 import com.qianfeng.util.TimeUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.apache.hadoop.hbase.client.Put;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 /**
- * @Description: 驱动类
- * Author by BayMin, Date on 2018/7/26.
+ * @Description: 写入到HDFS的Runner类
+ * Author by BayMin, Date on 2018/7/27.
  */
-public class LogToHbaseRunner implements Tool {
-    private static final Logger logger = Logger.getLogger(LogToHbaseRunner.class);
+public class LogToHDFSRunner implements Tool {
+    private static final Logger logger = Logger.getLogger(LogToHDFSRunner.class);
     Configuration conf = null;
 
     public static void main(String[] args) {
         try {
-            ToolRunner.run(new Configuration(), new LogToHbaseRunner(), args);
+            ToolRunner.run(new Configuration(), new LogToHDFSRunner(), args);
         } catch (Exception e) {
-            logger.error("执行job主方法失败.", e);
+            logger.error("运行ETL TO HDFS异常.", e);
         }
     }
 
     @Override
     public void setConf(Configuration conf) {
+        // 在写入HDFS中时也可以用,因为都是Configuration对象
         this.conf = HBaseConfiguration.create();
     }
 
@@ -48,29 +43,22 @@ public class LogToHbaseRunner implements Tool {
         return this.conf;
     }
 
-    /**
-     * yarn jar /xxx/xxx.jar com.qianfneg.etl.mr.tohbase.LogToHbaseRunner -d 2018-7-26
-     *
-     * @param args
-     */
     @Override
     public int run(String[] args) throws Exception {
         Configuration conf = this.conf;
         // 设置处理的参数
         this.setArgs(args, conf);
-        // 判断hbase的表是否存在
-        this.HbaseTableExists(conf);
+
         // 获取job
-        Job job = Job.getInstance(conf, "to hbase etl");
-        job.setJarByClass(LogToHbaseRunner.class);
+        Job job = Job.getInstance(conf, "TO HDFS ETL");
+        job.setJarByClass(LogToHDFSRunner.class);
 
         // 设置map端属性
-        job.setMapperClass(LogToHbaseMapper.class);
+        job.setMapperClass(LogToHDFSMapper.class);
         job.setMapOutputKeyClass(NullWritable.class);
-        job.setMapOutputValueClass(Put.class);
+        job.setMapOutputValueClass(LogDataWritable.class);
 
         // 初始化reduce
-        TableMapReduceUtil.initTableReducerJob(EventLogConstants.HBASE_TABLE_NAME, null, job);
         job.setNumReduceTasks(0);
 
         // 设置map阶段的输入路径
@@ -101,33 +89,6 @@ public class LogToHbaseRunner implements Tool {
     }
 
     /**
-     * 判断hbase表是否存在,不存在则创建
-     */
-    private void HbaseTableExists(Configuration conf) {
-        HBaseAdmin ha = null;
-        try {
-            ha = new HBaseAdmin(conf);
-            if (!ha.tableExists(TableName.valueOf(EventLogConstants.HBASE_TABLE_NAME))) {
-                HTableDescriptor hdc = new HTableDescriptor(EventLogConstants.HBASE_TABLE_NAME);
-                HColumnDescriptor hcd = new HColumnDescriptor(EventLogConstants.HBASE_COLUMN_FAMILY);
-                // 将列簇添加到hdc
-                hdc.addFamily(hcd);
-                ha.createTable(hdc);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (ha != null) {
-                try {
-                    ha.close();
-                } catch (IOException e) {
-                    // do nothing
-                }
-            }
-        }
-    }
-
-    /**
      * 设置路径
      */
     private void setInputPath(Job job) {
@@ -135,20 +96,23 @@ public class LogToHbaseRunner implements Tool {
         String date = job.getConfiguration().get(GlobalConstants.RUNNING_DATE);
         String[] fields = date.split("-");
         Path inputPath = new Path("/flume/events/" + fields[1] + "-" + fields[2]);
+        Path outputPath = new Path("/ods/month" + fields[1] + "/day" + fields[2]);
         // TODO 注意此处文件路径!!
         // TODO 由于Windows的原因个位数的月份不带0,因此在Windows系统中运行时,拼接字符串中多加一个0,但是上传到服务端时,这个0需要去掉
         // Path inputPath = new Path("/flume/events/0" + fields[1] + "-" + fields[2]);
-
         try {
             fs = FileSystem.get(conf);
-            if (fs.exists(inputPath)) {
+            if (fs.exists(inputPath))
                 FileInputFormat.addInputPath(job, inputPath);
-            } else {
+            else {
                 logger.warn("路径为:" + inputPath.toString());
                 throw new RuntimeException("输入路径不存在");
             }
+            if (fs.exists(outputPath))  // 如果输出路径存在则删除
+                fs.delete(outputPath, true);
+            FileOutputFormat.setOutputPath(job, outputPath);
         } catch (IOException e) {
-            logger.warn("获取fs对象异常!", e);
+            logger.warn("获取FS对象异常!", e);
         } finally {
             try {
                 fs.close();
