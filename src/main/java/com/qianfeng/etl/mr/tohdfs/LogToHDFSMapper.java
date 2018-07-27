@@ -103,7 +103,6 @@ public class LogToHDFSMapper extends Mapper<LongWritable, Text, NullWritable, Lo
         }
     }
 
-
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         logger.info("total inputRecords:" + inputRecords + "  total outputRecords:" + outputRecords + "  total filterRecords:" + filterRecords);
