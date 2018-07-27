@@ -12,7 +12,7 @@ public enum DateEnum {
     DAY("day"),
     HOUR("hour");
 
-    public String type;
+    public final String type;
 
     DateEnum(String type) {
         this.type = type;

@@ -49,9 +49,7 @@ public class LogToHbaseRunner implements Tool {
     }
 
     /**
-     * yarn jar /xxx/xxx.jar com.qianfneg.etl.mr.tohbase.LogToHbaseRunner -d 2018-7-26
-     *
-     * @param args
+     * yarn jar /xxx/xxx.jar com.qianfneg.etl.mr.tohbase.LogToHbaseRunner -d 2018-07-26
      */
     @Override
     public int run(String[] args) throws Exception {
@@ -135,10 +133,6 @@ public class LogToHbaseRunner implements Tool {
         String date = job.getConfiguration().get(GlobalConstants.RUNNING_DATE);
         String[] fields = date.split("-");
         Path inputPath = new Path("/flume/events/" + fields[1] + "-" + fields[2]);
-        // TODO 注意此处文件路径!!
-        // TODO 由于Windows的原因个位数的月份不带0,因此在Windows系统中运行时,拼接字符串中多加一个0,但是上传到服务端时,这个0需要去掉
-        // Path inputPath = new Path("/flume/events/0" + fields[1] + "-" + fields[2]);
-
         try {
             fs = FileSystem.get(conf);
             if (fs.exists(inputPath)) {

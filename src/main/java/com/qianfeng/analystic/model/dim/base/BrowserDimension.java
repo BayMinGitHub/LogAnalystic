@@ -13,16 +13,22 @@ import java.util.List;
  * @Description: 浏览器维度类
  * Author by BayMin, Date on 2018/7/27.
  */
-public class BrowserDimesion extends BaseDimension {
+public class BrowserDimension extends BaseDimension {
     private int id;
     private String browserName;
     private String browserVersion;
 
-    public BrowserDimesion() {
+    public BrowserDimension() {
 
     }
 
-    public BrowserDimesion(String browserName, String browserVersion) {
+    public BrowserDimension(String browserName, String browserVersion) {
+        this.browserName = browserName;
+        this.browserVersion = browserVersion;
+    }
+
+    public BrowserDimension(int id, String browserName, String browserVersion) {
+        this.id = id;
         this.browserName = browserName;
         this.browserVersion = browserVersion;
     }
@@ -30,8 +36,8 @@ public class BrowserDimesion extends BaseDimension {
     /**
      * 获取当前对象的一个静态方法
      */
-    public static BrowserDimesion newInstance(String browserName, String browserVersion) {
-        BrowserDimesion browserDimesion = new BrowserDimesion();
+    public static BrowserDimension newInstance(String browserName, String browserVersion) {
+        BrowserDimension browserDimesion = new BrowserDimension();
         browserDimesion.browserName = browserName;
         browserDimesion.browserVersion = browserVersion;
         return browserDimesion;
@@ -40,8 +46,8 @@ public class BrowserDimesion extends BaseDimension {
     /**
      * 构建维度集合对象
      */
-    public static List<BrowserDimesion> bulidList(String browserName, String browserVersion) {
-        List<BrowserDimesion> li = new ArrayList<>();
+    public static List<BrowserDimension> bulidList(String browserName, String browserVersion) {
+        List<BrowserDimension> li = new ArrayList<>();
         if (StringUtils.isEmpty(browserName))
             browserName = browserVersion = GlobalConstants.DEFAULT_VALUE;
         if (StringUtils.isEmpty(browserVersion))
@@ -56,7 +62,7 @@ public class BrowserDimesion extends BaseDimension {
     public int compareTo(BaseDimension o) {
         if (o == this)
             return 0;
-        BrowserDimesion other = (BrowserDimesion) o;
+        BrowserDimension other = (BrowserDimension) o;
         int tmp = this.id = other.id;
         if (tmp != 0)
             return tmp;
@@ -93,7 +99,7 @@ public class BrowserDimesion extends BaseDimension {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BrowserDimesion that = (BrowserDimesion) o;
+        BrowserDimension that = (BrowserDimension) o;
 
         if (id != that.id) return false;
         if (browserName != null ? !browserName.equals(that.browserName) : that.browserName != null)

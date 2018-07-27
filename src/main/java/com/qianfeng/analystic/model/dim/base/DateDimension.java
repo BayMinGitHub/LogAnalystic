@@ -23,6 +23,9 @@ public class DateDimension extends BaseDimension {
     private Date calendar = new Date();
     private String type;
 
+    public DateDimension() {
+    }
+
     public DateDimension(int year, int season, int month, int weeek, int day) {
         this.year = year;
         this.season = season;
@@ -90,16 +93,149 @@ public class DateDimension extends BaseDimension {
 
     @Override
     public int compareTo(BaseDimension o) {
-        return 0;
+        if (o == this)
+            return 0;
+        DateDimension other = (DateDimension) o;
+        int tmp = this.id - other.id;
+        if (tmp != 0)
+            return tmp;
+        tmp = this.year - other.year;
+        if (tmp != 0)
+            return tmp;
+        tmp = this.season - other.season;
+        if (tmp != 0)
+            return tmp;
+        tmp = this.month - other.month;
+        if (tmp != 0)
+            return tmp;
+        tmp = this.weeek - other.weeek;
+        if (tmp != 0)
+            return tmp;
+        tmp = this.day - other.day;
+        if (tmp != 0)
+            return tmp;
+//        tmp = this.calendar.compareTo(other.calendar);
+//        if (tmp != 0)
+//            return tmp;
+        tmp = this.type.compareTo(other.type);
+        return tmp;
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-
+        out.writeInt(this.id);
+        out.writeInt(this.year);
+        out.writeInt(this.season);
+        out.writeInt(this.month);
+        out.writeInt(this.weeek);
+        out.writeInt(this.day);
+        out.writeLong(this.calendar.getTime()); // Date类型写成时间戳
+        out.writeUTF(this.type);
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
+        this.id = in.readInt();
+        this.year = in.readInt();
+        this.season = in.readInt();
+        this.month = in.readInt();
+        this.weeek = in.readInt();
+        this.day = in.readInt();
+        this.calendar.setTime(in.readLong()); // Date类型读时间戳
+        this.type = in.readUTF();
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DateDimension that = (DateDimension) o;
+
+        if (id != that.id) return false;
+        if (year != that.year) return false;
+        if (season != that.season) return false;
+        if (month != that.month) return false;
+        if (weeek != that.weeek) return false;
+        if (day != that.day) return false;
+        if (!calendar.equals(that.calendar)) return false;
+        return type.equals(that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + year;
+        result = 31 * result + season;
+        result = 31 * result + month;
+        result = 31 * result + weeek;
+        result = 31 * result + day;
+        result = 31 * result + calendar.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getWeeek() {
+        return weeek;
+    }
+
+    public void setWeeek(int weeek) {
+        this.weeek = weeek;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public Date getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Date calendar) {
+        this.calendar = calendar;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
