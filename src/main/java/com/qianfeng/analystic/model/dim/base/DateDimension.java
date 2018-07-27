@@ -18,7 +18,7 @@ public class DateDimension extends BaseDimension {
     private int year;
     private int season;
     private int month;
-    private int weeek;
+    private int week;
     private int day;
     private Date calendar = new Date();
     private String type;
@@ -30,7 +30,7 @@ public class DateDimension extends BaseDimension {
         this.year = year;
         this.season = season;
         this.month = month;
-        this.weeek = weeek;
+        this.week = weeek;
         this.day = day;
     }
 
@@ -108,7 +108,7 @@ public class DateDimension extends BaseDimension {
         tmp = this.month - other.month;
         if (tmp != 0)
             return tmp;
-        tmp = this.weeek - other.weeek;
+        tmp = this.week - other.week;
         if (tmp != 0)
             return tmp;
         tmp = this.day - other.day;
@@ -127,7 +127,7 @@ public class DateDimension extends BaseDimension {
         out.writeInt(this.year);
         out.writeInt(this.season);
         out.writeInt(this.month);
-        out.writeInt(this.weeek);
+        out.writeInt(this.week);
         out.writeInt(this.day);
         out.writeLong(this.calendar.getTime()); // Date类型写成时间戳
         out.writeUTF(this.type);
@@ -139,7 +139,7 @@ public class DateDimension extends BaseDimension {
         this.year = in.readInt();
         this.season = in.readInt();
         this.month = in.readInt();
-        this.weeek = in.readInt();
+        this.week = in.readInt();
         this.day = in.readInt();
         this.calendar.setTime(in.readLong()); // Date类型读时间戳
         this.type = in.readUTF();
@@ -156,7 +156,7 @@ public class DateDimension extends BaseDimension {
         if (year != that.year) return false;
         if (season != that.season) return false;
         if (month != that.month) return false;
-        if (weeek != that.weeek) return false;
+        if (week != that.week) return false;
         if (day != that.day) return false;
         if (!calendar.equals(that.calendar)) return false;
         return type.equals(that.type);
@@ -168,7 +168,7 @@ public class DateDimension extends BaseDimension {
         result = 31 * result + year;
         result = 31 * result + season;
         result = 31 * result + month;
-        result = 31 * result + weeek;
+        result = 31 * result + week;
         result = 31 * result + day;
         result = 31 * result + calendar.hashCode();
         result = 31 * result + type.hashCode();
@@ -208,11 +208,11 @@ public class DateDimension extends BaseDimension {
     }
 
     public int getWeeek() {
-        return weeek;
+        return week;
     }
 
     public void setWeeek(int weeek) {
-        this.weeek = weeek;
+        this.week = weeek;
     }
 
     public int getDay() {

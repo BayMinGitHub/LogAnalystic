@@ -83,14 +83,40 @@ public class TimeUtil {
     }
 
     /**
-     * 根据时间戳和
+     * 根据时间戳获取对应类型时间
      */
     public static int getDateInfo(Long timestamp, DateEnum type) {
-        return 0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        if (type.equals(DateEnum.YEAR))
+            return calendar.get(Calendar.YEAR);
+        if (type.equals(DateEnum.SEASON)) {
+            int month = calendar.get(Calendar.MONTH) + 1;
+            return (month + 2) / 3;
+        }
+        if (type.equals(DateEnum.MONTH))
+            return calendar.get(Calendar.MONTH) + 1;
+        if (type.equals(DateEnum.WEEK))
+            return calendar.get(Calendar.WEEK_OF_YEAR);
+        if (type.equals(DateEnum.DAY))
+            return calendar.get(Calendar.DAY_OF_MONTH);
+        if (type.equals(DateEnum.HOUR))
+            return calendar.get(Calendar.HOUR_OF_DAY);
+        throw new RuntimeException("该类型不支持获取对应时间值" + type.type);
     }
 
+    /**
+     * 根据时间戳获取时间戳所在周第一天的时间戳
+     */
     public static long getFirstDayOfWeek(Long timestamp) {
-        return 0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        calendar.set(Calendar.DAY_OF_WEEK, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 
     /**
@@ -101,5 +127,10 @@ public class TimeUtil {
 //        System.out.println(getYesterdayDate());
 //        System.out.println(parserString2Long("2018-07-26"));
 //        System.out.println(parserLong2String(parserString2Long("2018-07-25")));
+//        System.out.println(getDateInfo(1532679235000L, DateEnum.YEAR));
+//        System.out.println(getDateInfo(1532679235000L, DateEnum.SEASON));
+//        System.out.println(getDateInfo(1532679235000L, DateEnum.WEEK));
+//        System.out.println(getDateInfo(1532679235000L, DateEnum.DAY));
+//        System.out.println(getDateInfo(1532679235000L, DateEnum.MONTH));
 //    }
 }
