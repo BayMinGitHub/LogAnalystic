@@ -12,4 +12,6 @@ public class GlobalConstants {
     public static final String DRIVER = "com.mysql.jdbc.Driver";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "19950116";
+    public static final String PREFIX_OUTPUT = "output_";
+    public static final int NUM_OF_BATCH = 50;
 }

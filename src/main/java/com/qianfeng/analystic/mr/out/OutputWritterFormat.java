@@ -3,13 +3,19 @@ package com.qianfeng.analystic.mr.out;
 import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
 import com.qianfeng.analystic.service.IDimensionConvert;
+import com.qianfeng.analystic.service.impl.IDimensionConvertImpl;
+import com.qianfeng.common.GlobalConstants;
 import com.qianfeng.common.KpiType;
+import com.qianfeng.util.JDBCUtil;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter;
+import org.apache.log4j.Logger;
 
-import javax.security.auth.login.Configuration;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +25,15 @@ import java.util.Map;
  * Author by BayMin, Date on 2018/7/30.
  */
 public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValueBaseWritable> {
+    private static final Logger logger = Logger.getLogger(OutputWritterFormat.class);
+
     // DBOutFormat
     @Override
     public RecordWriter<BaseDimension, OutputValueBaseWritable> getRecordWriter(TaskAttemptContext context) throws IOException, InterruptedException {
-
-        return null;
+        Configuration conf = context.getConfiguration();
+        Connection conn = JDBCUtil.getConn();
+        IDimensionConvert convert = new IDimensionConvertImpl();
+        return new OutputWritterRecordWritter(conn, conf, convert);
     }
 
     /**
@@ -38,7 +48,6 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
         private Map<KpiType, Integer> batch = new HashMap<>();
         // 用来存储Kpi存储的ps,方便下一次直接获取
         private Map<KpiType, PreparedStatement> map = new HashMap<>();
-
 
         public OutputWritterRecordWritter() {
         }
@@ -60,7 +69,7 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
             try {
                 int count = 1; // 批量的起始值
                 if (map.get(kpi) == null)
-                    map.put(kpi, conn.prepareStatement(kpi.kpiName));
+                    map.put(kpi, conn.prepareStatement(conf.get(kpi.kpiName)));
                 else {
                     ps = map.get(kpi);
                     count = batch.get(kpi);
@@ -68,14 +77,47 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
                 }
                 // 将批量的值更新到batch中
                 this.batch.put(kpi, count);
-            } catch (Exception e) {
 
+                // 为ps赋值
+                String outputWritterName = conf.get(GlobalConstants.PREFIX_OUTPUT + kpi.kpiName);
+                Class classz = Class.forName(outputWritterName);
+                OutputWritter outputWritter = (OutputWritter) classz.newInstance();
+                outputWritter.outputWrite(conf, key, value, ps, convert); // 调用接口
+                // 判断有多少个ps
+                if (count % GlobalConstants.NUM_OF_BATCH == 0) {
+                    ps.addBatch();
+                    conn.commit();
+                    // 执行完成,移除
+                    batch.remove(kpi);
+                }
+            } catch (Exception e) {
+                logger.warn("执行存储结果到MySQL异常", e);
             }
         }
 
+        /**
+         * 关闭之前,确保剩余的ps被执行一遍
+         */
         @Override
         public void close(TaskAttemptContext context) throws IOException, InterruptedException {
-
+            try {
+                for (Map.Entry<KpiType, PreparedStatement> en : map.entrySet()) {
+                    en.getValue().executeBatch();
+                }
+            } catch (SQLException e) {
+                logger.warn("关闭对象时,执行SQL异常");
+            } finally {
+                try {
+                    for (Map.Entry<KpiType, PreparedStatement> en : map.entrySet()) {
+                        en.getValue().close();
+                        map.remove(en.getKey());
+                    }
+                } catch (SQLException e) {
+                    logger.warn("关闭ps时异常", e);
+                } finally {
+                    JDBCUtil.close(conn, null, null); // 关闭conn
+                }
+            }
         }
     }
 
@@ -86,8 +128,6 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
 
     @Override
     public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException, InterruptedException {
-        return null;
-
-
+        return new FileOutputCommitter(null, context);
     }
 }

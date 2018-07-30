@@ -53,6 +53,8 @@ public class IDimensionConvertImpl implements IDimensionConvert {
         synchronized (this) {
             id = this.execute(sql, baseDimension, conn);
         }
+        // 将获取到的id添加到缓存
+        this.cache.put(cacheKey, id);
         return id;
     }
 

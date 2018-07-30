@@ -2,6 +2,10 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
 <configuration>
+    <property>        <name>output_new_user</name>
+
+        <value>com.qianfeng.analystic.mr.nu.NewUserOutputWritter</value>
+    </property>
     <property>
         <name>new_install_user</name>
         <value>insert into `stats_user`
