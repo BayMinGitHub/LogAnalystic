@@ -49,9 +49,6 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
         // 用来存储Kpi存储的ps,方便下一次直接获取
         private Map<KpiType, PreparedStatement> map = new HashMap<>();
 
-        public OutputWritterRecordWritter() {
-        }
-
         public OutputWritterRecordWritter(Connection conn, Configuration conf, IDimensionConvert convert) {
             this.conn = conn;
             this.conf = conf;
@@ -68,16 +65,17 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
             PreparedStatement ps = null;
             try {
                 int count = 1; // 批量的起始值
-                if (map.get(kpi) == null)
-                    map.put(kpi, conn.prepareStatement(conf.get(kpi.kpiName)));
-                else {
+                if (map.get(kpi) == null) {
+                    ps = conn.prepareStatement(conf.get(kpi.kpiName));
+                    // TODO 不要自己瞎胡写,最后出现错误都不知道在哪里!!!
+                    map.put(kpi, ps);
+                } else {
                     ps = map.get(kpi);
                     count = batch.get(kpi);
                     count++;
                 }
                 // 将批量的值更新到batch中
                 this.batch.put(kpi, count);
-
                 // 为ps赋值
                 String outputWritterName = conf.get(GlobalConstants.PREFIX_OUTPUT + kpi.kpiName);
                 Class classz = Class.forName(outputWritterName);

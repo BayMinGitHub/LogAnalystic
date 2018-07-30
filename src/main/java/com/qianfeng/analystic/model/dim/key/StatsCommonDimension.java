@@ -1,5 +1,6 @@
 package com.qianfeng.analystic.model.dim.key;
 
+import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.base.DateDimension;
 import com.qianfeng.analystic.model.dim.base.KpiDimension;
 import com.qianfeng.analystic.model.dim.base.PlatFormDimension;
@@ -50,7 +51,7 @@ public class StatsCommonDimension extends StatsBaseDimension {
     }
 
     @Override
-    public int compareTo(StatsBaseDimension o) {
+    public int compareTo(BaseDimension o) {
         if (this == o)
             return 0;
         StatsCommonDimension other = (StatsCommonDimension) o;

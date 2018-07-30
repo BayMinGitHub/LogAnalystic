@@ -1,5 +1,6 @@
 package com.qianfeng.analystic.model.dim.key;
 
+import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.base.BrowserDimension;
 
 import java.io.DataInput;
@@ -32,7 +33,7 @@ public class StatsUserDimension extends StatsBaseDimension {
     }
 
     @Override
-    public int compareTo(StatsBaseDimension o) {
+    public int compareTo(BaseDimension o) {
         if (this == o) {
             return 0;
         }
