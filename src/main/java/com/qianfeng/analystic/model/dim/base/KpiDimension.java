@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * @Description: KPI的维度, 按小时的活跃用户, 小时的session个数
+ * @Description: KPI(关键业绩指标)的维度, 按小时的活跃用户, 小时的session个数
  * Author by BayMin, Date on 2018/7/27.
  */
 public class KpiDimension extends BaseDimension {
