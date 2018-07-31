@@ -16,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LogUtil {
     private static final Logger logger = Logger.getLogger(LogUtil.class);
 
-    /**192.168.216.1^A
+    /**
+     * 192.168.216.1^A
      * 1532606852.904^A
      * hadoop010^A
      * /index.html?ver=1.0&u_mid=test&en=e_cs&c_time=1532605298840&sdk=java_sdk&oid=123&pl=java_server&b_iev=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36
@@ -33,7 +34,7 @@ public class LogUtil {
             if (fields.length == 4) {
                 // 向info赋值
                 info.put(EventLogConstants.EVENT_COLUMN_NAME_IP, fields[0]);
-                info.put(EventLogConstants.EVENT_COLUMN_NAME_SERVER_TIME, fields[1].replaceAll(".", ""));
+                info.put(EventLogConstants.EVENT_COLUMN_NAME_SERVER_TIME, fields[1].replaceAll("\\.", ""));
                 int index = fields[3].indexOf("?");
                 if (index > 0) {
                     // 获取参数列表

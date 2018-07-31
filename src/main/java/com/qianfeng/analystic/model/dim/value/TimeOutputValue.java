@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.model.dim.value.map;
+package com.qianfeng.analystic.model.dim.value;
 
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
 import com.qianfeng.common.KpiType;

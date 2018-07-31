@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.model.dim.value.reduce;
+package com.qianfeng.analystic.model.dim.value;
 
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
 import com.qianfeng.common.KpiType;
@@ -29,11 +29,6 @@ public class MapWritableValue extends OutputValueBaseWritable {
     }
 
     @Override
-    public KpiType getKpi() {
-        return this.kpi;
-    }
-
-    @Override
     public void write(DataOutput out) throws IOException {
         this.value.write(out); // MapWritable的写出
         WritableUtils.writeEnum(out, kpi); // 注意枚举的写出
@@ -51,6 +46,11 @@ public class MapWritableValue extends OutputValueBaseWritable {
 
     public void setValue(MapWritable value) {
         this.value = value;
+    }
+
+    @Override
+    public KpiType getKpi() {
+        return this.kpi;
     }
 
     public void setKpi(KpiType kpi) {

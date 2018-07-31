@@ -2,9 +2,50 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
 <configuration>
+
     <property>
         <name>output_new_user</name>
         <value>com.qianfeng.analystic.mr.nu.NewUserOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_browser_new_user</name>
+        <value>com.qianfeng.analystic.mr.nu.NewUserOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_active_user</name>
+        <value>com.qianfeng.analystic.mr.au.ActiveUserOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_browser_active_user</name>
+        <value>com.qianfeng.analystic.mr.au.ActiveUserOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_active_member</name>
+        <value>com.qianfeng.analystic.mr.am.ActiveMemberOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_browser_active_member</name>
+        <value>com.qianfeng.analystic.mr.am.ActiveMemberOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_install_new_member</name>
+        <value>com.qianfeng.analystic.mr.nm.NewMemberOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_new_member</name>
+        <value>com.qianfeng.analystic.mr.nm.NewMemberOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_browser_new_member</name>
+        <value>com.qianfeng.analystic.mr.nm.NewMemberOutputWritter</value>
     </property>
 
 </configuration>

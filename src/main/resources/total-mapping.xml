@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+    <property>
+        <name>total_new_total_user</name>
+        <value>
+            select `platform_dimension_id`,`total_install_users`
+            from `stats_user` where `date_dimension_id` = ?
+        </value>
+    </property>
+
+    <property>
+        <name>total_user_new_user</name>
+        <value>
+            select `platform_dimension_id`,`new_install_users`
+            from `stats_user` where `date_dimension_id` = ?
+        </value>
+    </property>
+
+    <property>
+        <name>total_user_new_update_user</name>
+        <value>
+            insert into `stats_user`
+            (`date_dimension_id`,`platform_dimension_id`,`total_install_users`,`created`)
+            values(?,?,?,?) on duplicate key update `total_install_users` = ?
+        </value>
+    </property>
+
+    <property>
+        <name>total_new_total_member</name>
+        <value>
+            select `platform_dimension_id`,`total_members`
+            from `stats_user` where `date_dimension_id` = ?
+        </value>
+    </property>
+
+    <property>
+        <name>total_member_new_member</name>
+        <value>
+            select `platform_dimension_id`,`new_members`
+            from `stats_user` where `date_dimension_id` = ?
+        </value>
+    </property>
+
+    <property>
+        <name>total_member_new_update_member</name>
+        <value>
+            insert into `stats_user`
+            (`date_dimension_id`,`platform_dimension_id`,`total_members`,`created`)
+            values(?,?,?,?) on duplicate key update `total_install_users` = ?
+        </value>
+    </property>
+
+</configuration>

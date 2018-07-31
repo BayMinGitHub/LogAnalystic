@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.mr.nu;
+package com.qianfeng.analystic.mr.am;
 
 import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
@@ -6,7 +6,6 @@ import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
 import com.qianfeng.analystic.model.dim.value.MapWritableValue;
 import com.qianfeng.analystic.mr.out.OutputWritter;
 import com.qianfeng.analystic.service.IDimensionConvert;
-
 import com.qianfeng.common.GlobalConstants;
 import com.qianfeng.common.KpiType;
 import org.apache.hadoop.conf.Configuration;
@@ -17,10 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * @Description: 为新增用户的ps赋值
+ * @Description: 为活跃用户的ps赋值
  * Author by BayMin, Date on 2018/7/30.
  */
-public class NewUserOutputWritter implements OutputWritter {
+public class ActiveMemberOutputWritter implements OutputWritter {
     @Override
     public void outputWrite(Configuration conf, BaseDimension key, OutputValueBaseWritable value, PreparedStatement ps, IDimensionConvert convert) throws IOException, SQLException {
         StatsUserDimension statsUserDimension = (StatsUserDimension) key;
@@ -30,7 +29,7 @@ public class NewUserOutputWritter implements OutputWritter {
         int i = 0;
         ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
         ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
-        if (v.getKpi().equals(KpiType.BROWSER_NEW_USER)) {
+        if (v.getKpi().equals(KpiType.BROWSER_ACTIVE_MEMBER)) {
             ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimesion()));
         }
         ps.setInt(++i, newUsers);

@@ -46,7 +46,7 @@ public class BrowserDimension extends BaseDimension {
     /**
      * 构建维度集合对象
      */
-    public static List<BrowserDimension> bulidList(String browserName, String browserVersion) {
+    public static List<BrowserDimension> buildList(String browserName, String browserVersion) {
         List<BrowserDimension> li = new ArrayList<>();
         if (StringUtils.isEmpty(browserName))
             browserName = browserVersion = GlobalConstants.DEFAULT_VALUE;

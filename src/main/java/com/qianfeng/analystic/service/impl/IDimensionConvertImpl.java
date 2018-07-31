@@ -69,8 +69,9 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             ps = conn.prepareStatement(sql[0]);
             this.setArgs(baseDimension, ps);
             rs = ps.executeQuery();
-            if (rs.next())
+            if (rs.next()) {
                 return rs.getInt("id");
+            }
             // 如果代码走到这里说明没有查询到,然后准备插入再取值
             ps = conn.prepareStatement(sql[1], Statement.RETURN_GENERATED_KEYS); // 返回生成的Key
             this.setArgs(baseDimension, ps);
@@ -121,25 +122,25 @@ public class IDimensionConvertImpl implements IDimensionConvert {
      * 构建sqls
      */
     private String[] buildDateSql() {
-        String select = "select id from `dimension_date` where `year` = ? and `season` = ? and `month` = ? and `week` = ? and `day` = ? and `calendar` = ? and `type` = ?";
+        String select = "select `id` from `dimension_date` where `year` = ? and `season` = ? and `month` = ? and `week` = ? and `day` = ? and `calendar` = ? and `type` = ?";
         String insert = "insert into `dimension_date` (`year`,`season`,`month`,`week`,`day`,`calendar`,`type`) values (?,?,?,?,?,?,?)";
         return new String[]{select, insert};
     }
 
     private String[] buildPlatFormSql() {
-        String select = "select id from `dimension_platform` where `platform_name` = ?";
+        String select = "select `id` from `dimension_platform` where `platform_name` = ?";
         String insert = "insert into `dimension_platform` (`platform_name`) values (?)";
         return new String[]{select, insert};
     }
 
     private String[] buildBrowserSql() {
-        String select = "select id from `dimension_browser` where `browser_name` = ? and `browser_version` = ?";
-        String insert = "insert into `dimension_platform` (`browser_name`,`browser_version`) values (?,?)";
+        String select = "select `id` from `dimension_browser` where `browser_name` = ? and `browser_version` = ?";
+        String insert = "insert into `dimension_browser` (`browser_name`,`browser_version`) values (?,?)";
         return new String[]{select, insert};
     }
 
     private String[] buildKpiSql() {
-        String select = "select id from `dimension_kpi` where `kpi_name` = ?";
+        String select = "select `id` from `dimension_kpi` where `kpi_name` = ?";
         String insert = "insert into `dimension_kpi` (`kpi_name`) values (?)";
         return new String[]{select, insert};
     }

@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.mr.nu;
+package com.qianfeng.analystic.mr.au;
 
 import com.qianfeng.analystic.model.dim.base.BrowserDimension;
 import com.qianfeng.analystic.model.dim.base.DateDimension;
@@ -15,25 +15,26 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * @Description: 新增的用户和新增的总用户统计的Mapper类, 需要Launch时间中的uuid为一个数
- * Author by BayMin, Date on 2018/7/27.
+ * @Description: 活跃用户
+ * Author by BayMin, Date on 2018/7/31.
  */
-public class NewUserMapper extends TableMapper<StatsUserDimension, TimeOutputValue> {
-    private static final Logger logger = Logger.getLogger(NewUserMapper.class);
+public class ActiveUserMapper extends TableMapper<StatsUserDimension, TimeOutputValue> {
+    private static final Logger logger = Logger.getLogger(com.qianfeng.analystic.mr.nu.NewUserMapper.class);
     private byte[] family = Bytes.toBytes(EventLogConstants.HBASE_COLUMN_FAMILY);
     private StatsUserDimension k = new StatsUserDimension();
     private TimeOutputValue v = new TimeOutputValue();
-    private KpiDimension newUserKpi = new KpiDimension(KpiType.NEW_USER.kpiName);
-    private KpiDimension browserNewUserKpi = new KpiDimension(KpiType.BROWSER_NEW_USER.kpiName);
+    private KpiDimension activeUser = new KpiDimension(KpiType.ACTIVE_USER.kpiName);
+    private KpiDimension browserActiveUserKpi = new KpiDimension(KpiType.BROWSER_ACTIVE_USER.kpiName);
 
     @Override
-    protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
+    protected void map(ImmutableBytesWritable key, Result value, Mapper.Context context) throws IOException, InterruptedException {
         // 获取需要的字段
         // TODO 老师讲BUG时认真听讲
         String uuid = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_UUID)));
@@ -61,11 +62,10 @@ public class NewUserMapper extends TableMapper<StatsUserDimension, TimeOutputVal
         StatsCommonDimension statsCommonDimension = this.k.getStatsCommonDimension();
         // 为statsCommonDimension赋值
         statsCommonDimension.setDateDimension(dateDimension);
-
         BrowserDimension defaultBrowserDimension = new BrowserDimension("", "");
         // 循环平台维度集合对象
         for (PlatFormDimension pl : platFormDimensions) {
-            statsCommonDimension.setKpiDimension(newUserKpi);
+            statsCommonDimension.setKpiDimension(activeUser);
             statsCommonDimension.setPlatFormDimension(pl);
             this.k.setStatsCommonDimension(statsCommonDimension);
             this.k.setBrowserDimesion(defaultBrowserDimension);
@@ -73,7 +73,7 @@ public class NewUserMapper extends TableMapper<StatsUserDimension, TimeOutputVal
             context.write(this.k, this.v);
 
             for (BrowserDimension dimension : browserDimensionList) {
-                statsCommonDimension.setKpiDimension(browserNewUserKpi);
+                statsCommonDimension.setKpiDimension(browserActiveUserKpi);
                 this.k.setStatsCommonDimension(statsCommonDimension);
                 this.k.setBrowserDimesion(dimension);
                 context.write(this.k, this.v);

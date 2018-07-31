@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.mr.nu;
+package com.qianfeng.analystic.mr.nm;
 
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
 import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
@@ -6,6 +6,7 @@ import com.qianfeng.analystic.model.dim.value.MapWritableValue;
 import com.qianfeng.common.KpiType;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
@@ -13,10 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @Description: 新增的用户和新增的总用户统计的Reducer类
+ * @Description: 活跃用户的Reducer类
  * Author by BayMin, Date on 2018/7/27.
  */
-public class NewUserReducer extends Reducer<StatsUserDimension, TimeOutputValue, StatsUserDimension, MapWritableValue> {
+public class NewMemberReducer extends Reducer<StatsUserDimension, TimeOutputValue, StatsUserDimension, MapWritableValue> {
     // 用来去重
     private Set<String> unique = new HashSet<>();
     private MapWritableValue v = new MapWritableValue();
@@ -32,12 +33,17 @@ public class NewUserReducer extends Reducer<StatsUserDimension, TimeOutputValue,
         }
         // 构建输出的value
         MapWritable mapWritable = new MapWritable();
+        // 输出memberId存储到表中
+        for (String memberId : this.unique) {
+            this.v.setKpi(KpiType.INSTALL_NEW_MEMBER);
+            mapWritable.put(new IntWritable(-2), new Text(memberId));
+            this.v.setValue(mapWritable);
+            context.write(key, this.v);
+        }
         mapWritable.put(new IntWritable(-1), new IntWritable(this.unique.size()));
         // 设置kpi
         this.v.setValue(mapWritable);
         this.v.setKpi(KpiType.valueOfType(key.getStatsCommonDimension().getKpiDimension().getKpiName()));
-//        if (key.getStatsCommonDimension().getKpiDimension().getKpiName().equals(KpiType.NEW_USER.kpiName))
-//            this.v.setKpi(KpiType.NEW_USER);
         // 输出
         context.write(key, this.v);
     }
