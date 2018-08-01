@@ -1,6 +1,6 @@
-import com.qianfeng.analystic.model.dim.base.PlatFormDimension;
-import com.qianfeng.analystic.service.IDimensionConvert;
-import com.qianfeng.analystic.service.impl.IDimensionConvertImpl;
+import com.bay.analystic.model.dim.base.PlatFormDimension;
+import com.bay.analystic.service.IDimensionConvert;
+import com.bay.analystic.service.impl.IDimensionConvertImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;

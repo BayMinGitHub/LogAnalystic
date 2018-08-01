@@ -1,4 +1,4 @@
-import com.qianfeng.etl.util.LogUtil;
+import com.bay.etl.util.LogUtil;
 
 import java.util.Map;
 
