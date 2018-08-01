@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class PageViewReducer extends Reducer<StatsUserDimension, TimeOutputValue, StatsUserDimension, MapWritableValue> {
     // 用来去重
-    private List<String> unique = new ArrayList<>();
+    private List<String> unique = new ArrayList<>(); // 因为无需去重,使用List
     private MapWritableValue v = new MapWritableValue();
 
     @Override

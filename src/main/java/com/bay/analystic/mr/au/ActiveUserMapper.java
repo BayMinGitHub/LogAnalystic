@@ -68,14 +68,14 @@ public class ActiveUserMapper extends TableMapper<StatsUserDimension, TimeOutput
             statsCommonDimension.setKpiDimension(activeUser);
             statsCommonDimension.setPlatFormDimension(pl);
             this.k.setStatsCommonDimension(statsCommonDimension);
-            this.k.setBrowserDimesion(defaultBrowserDimension);
+            this.k.setBrowserDimension(defaultBrowserDimension);
             // 输出
             context.write(this.k, this.v);
 
             for (BrowserDimension dimension : browserDimensionList) {
                 statsCommonDimension.setKpiDimension(browserActiveUserKpi);
                 this.k.setStatsCommonDimension(statsCommonDimension);
-                this.k.setBrowserDimesion(dimension);
+                this.k.setBrowserDimension(dimension);
                 context.write(this.k, this.v);
             }
         }

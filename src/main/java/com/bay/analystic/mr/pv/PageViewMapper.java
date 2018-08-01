@@ -43,7 +43,7 @@ public class PageViewMapper extends TableMapper<StatsUserDimension, TimeOutputVa
 
         // 对三个字段进行空判断
         if (StringUtils.isEmpty(url) || StringUtils.isEmpty(serverTime) || StringUtils.isEmpty(platform)) {
-            logger.warn("uuid,serverTime,platform中有空值" + "uuid = " + url + "serverTime" + serverTime + "platform" + platform);
+            logger.warn("url,serverTime,platform中有空值" + "url = " + url + "serverTime" + serverTime + "platform" + platform);
             return;
         }
 
@@ -66,7 +66,7 @@ public class PageViewMapper extends TableMapper<StatsUserDimension, TimeOutputVa
             statsCommonDimension.setKpiDimension(pageViewKpi);
             statsCommonDimension.setPlatFormDimension(pl);
             this.k.setStatsCommonDimension(statsCommonDimension);
-            this.k.setBrowserDimesion(browserDimension);
+            this.k.setBrowserDimension(browserDimension);
             // 输出
             context.write(this.k, this.v);
         }

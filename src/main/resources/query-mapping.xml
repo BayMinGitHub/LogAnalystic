@@ -130,4 +130,12 @@
             values(?,?,?,?,?) on duplicate key update `pv` = ?
         </value>
     </property>
+    <property>
+        <name>location</name>
+        <value>
+            insert into `stats_device_location`
+            (`date_dimension_id`,`platform_dimension_id`,`location_dimension_id`,`active_users`,`sessions`,`bounce_sessions`,`created`)
+            values(?,?,?,?,?,?,?) on duplicate key update `active_users` = ? ,`sessions`= ? ,`bounce_sessions` = ?
+        </value>
+    </property>
 </configuration>

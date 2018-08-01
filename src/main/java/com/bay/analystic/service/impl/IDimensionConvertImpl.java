@@ -48,6 +48,8 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             sql = this.buildBrowserSql();
         else if (baseDimension instanceof KpiDimension)
             sql = this.buildKpiSql();
+        else if (baseDimension instanceof LocationDimension)
+            sql = this.buildLocalSqls();
         Connection conn = JDBCUtil.getConn();
         int id = -1;
         synchronized (this) {
@@ -112,6 +114,11 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             } else if (baseDimension instanceof KpiDimension) {
                 KpiDimension kpiDimension = (KpiDimension) baseDimension;
                 ps.setString(++i, kpiDimension.getKpiName());
+            } else if (baseDimension instanceof LocationDimension) {
+                LocationDimension locationDimension = (LocationDimension) baseDimension;
+                ps.setString(++i, locationDimension.getCountry());
+                ps.setString(++i, locationDimension.getProvince());
+                ps.setString(++i, locationDimension.getCity());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,6 +152,12 @@ public class IDimensionConvertImpl implements IDimensionConvert {
         return new String[]{select, insert};
     }
 
+    private String[] buildLocalSqls() {
+        String select = "select id from `dimension_location` where `country` = ? and `province` = ? and `city` = ?";
+        String insert = "insert into `dimension_location`(`country`,`province`,`city`) values(?,?,?)";
+        return new String[]{select, insert};
+    }
+
     private String buildCache(BaseDimension baseDimension) {
         StringBuffer sb = new StringBuffer();
         if (baseDimension instanceof DateDimension) {
@@ -163,6 +176,12 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             sb.append("kpi_");
             KpiDimension kpiDimension = (KpiDimension) baseDimension;
             sb.append(kpiDimension.getKpiName());
+        } else if (baseDimension instanceof LocationDimension) {
+            sb.append("location_");
+            LocationDimension locationDimension = (LocationDimension) baseDimension;
+            sb.append(locationDimension.getCountry());
+            sb.append(locationDimension.getProvince());
+            sb.append(locationDimension.getCity());
         }
         return sb.length() == 0 ? null : sb.toString();
     }

@@ -35,7 +35,7 @@ public class ActiveUserOutputWritter implements OutputWritter {
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
                 if (v.getKpi().equals(KpiType.BROWSER_ACTIVE_USER)) {
-                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimesion()));
+                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimension()));
                 }
                 ps.setInt(++i, newUsers);
                 ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
@@ -60,6 +60,5 @@ public class ActiveUserOutputWritter implements OutputWritter {
         }
         //添加到批处理中
         ps.addBatch();
-
     }
 }

@@ -19,7 +19,8 @@ public enum KpiType {
     BROWSER_SESSION("browser_session"),
     HOURLY_ACTIVE_USER("hourly_active_user"),
     HOURLY_SESSION("hourly_session"),
-    PAGE_VIEW("page_view");
+    PAGE_VIEW("page_view"),
+    LOCATION("location");
 
     public final String kpiName;
 

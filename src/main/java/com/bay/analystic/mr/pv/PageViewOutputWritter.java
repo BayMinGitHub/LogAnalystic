@@ -29,7 +29,7 @@ public class PageViewOutputWritter implements OutputWritter {
         int i = 0;
         ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
         ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
-        ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimesion()));
+        ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimension()));
         ps.setInt(++i, pv);
         ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
         ps.setInt(++i, pv);

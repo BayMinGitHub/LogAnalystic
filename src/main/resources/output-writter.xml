@@ -73,4 +73,9 @@
         <value>com.bay.analystic.mr.pv.PageViewOutputWritter</value>
     </property>
 
+    <property>
+        <name>output_location</name>
+        <value>com.bay.analystic.mr.location.LocationOutputWritter</value>
+    </property>
+
 </configuration>

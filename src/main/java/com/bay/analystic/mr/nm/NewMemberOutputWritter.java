@@ -45,7 +45,7 @@ public class NewMemberOutputWritter implements OutputWritter {
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
                 if (v.getKpi().kpiName.equals(KpiType.BROWSER_NEW_MEMBER.kpiName)) {
-                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimesion()));
+                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimension()));
                 }
                 ps.setInt(++i, newUsers);
                 ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));

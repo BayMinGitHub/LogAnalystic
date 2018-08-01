@@ -83,11 +83,11 @@ public class StatsUserDimension extends StatsBaseDimension {
         this.statsCommonDimension = statsCommonDimension;
     }
 
-    public BrowserDimension getBrowserDimesion() {
+    public BrowserDimension getBrowserDimension() {
         return browserDimension;
     }
 
-    public void setBrowserDimesion(BrowserDimension browserDimesion) {
-        this.browserDimension = browserDimesion;
+    public void setBrowserDimension(BrowserDimension browserDimension) {
+        this.browserDimension = browserDimension;
     }
 }

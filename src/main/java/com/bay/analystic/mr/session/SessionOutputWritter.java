@@ -34,7 +34,7 @@ public class SessionOutputWritter implements OutputWritter {
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
                 if (v.getKpi().equals(KpiType.BROWSER_SESSION)) {
-                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimesion()));
+                    ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getBrowserDimension()));
                 }
                 ps.setInt(++i, sessions);
                 ps.setInt(++i, sessionLength);

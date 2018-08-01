@@ -68,14 +68,14 @@ public class NewUserMapper extends TableMapper<StatsUserDimension, TimeOutputVal
             statsCommonDimension.setKpiDimension(newUserKpi);
             statsCommonDimension.setPlatFormDimension(pl);
             this.k.setStatsCommonDimension(statsCommonDimension);
-            this.k.setBrowserDimesion(defaultBrowserDimension);
+            this.k.setBrowserDimension(defaultBrowserDimension);
             // 输出
             context.write(this.k, this.v);
 
             for (BrowserDimension dimension : browserDimensionList) {
                 statsCommonDimension.setKpiDimension(browserNewUserKpi);
                 this.k.setStatsCommonDimension(statsCommonDimension);
-                this.k.setBrowserDimesion(dimension);
+                this.k.setBrowserDimension(dimension);
                 context.write(this.k, this.v);
             }
         }
