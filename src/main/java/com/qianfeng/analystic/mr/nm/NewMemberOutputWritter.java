@@ -3,16 +3,18 @@ package com.qianfeng.analystic.mr.nm;
 import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
-import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
 import com.qianfeng.analystic.model.dim.value.MapWritableValue;
-import com.qianfeng.analystic.mr.out.OutputWritter;
+import com.qianfeng.analystic.model.dim.out.OutputWritter;
 import com.qianfeng.analystic.service.IDimensionConvert;
 import com.qianfeng.common.GlobalConstants;
 import com.qianfeng.common.KpiType;
+import com.qianfeng.util.TimeUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -32,9 +34,10 @@ public class NewMemberOutputWritter implements OutputWritter {
             case INSTALL_NEW_MEMBER:
                 String memberId = ((MapWritableValue) value).getValue().get(new IntWritable(-2)).toString();
                 ps.setString(++i, memberId);
-                ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
-                ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
-                ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
+                ps.setDate(++i, new Date(TimeUtil.parserString2Long(conf.get(GlobalConstants.RUNNING_DATE))));
+                ps.setBigDecimal(++i, BigDecimal.valueOf(TimeUtil.parserString2Long(conf.get(GlobalConstants.RUNNING_DATE))));
+                ps.setDate(++i, new Date(TimeUtil.parserString2Long(conf.get(GlobalConstants.RUNNING_DATE))));
+                ps.setDate(++i, new Date(TimeUtil.parserString2Long(conf.get(GlobalConstants.RUNNING_DATE))));
                 break;
             case NEW_MEMBER:
             case BROWSER_NEW_MEMBER:

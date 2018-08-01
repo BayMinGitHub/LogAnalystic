@@ -4,7 +4,7 @@ import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;
 import com.qianfeng.analystic.model.dim.value.MapWritableValue;
-import com.qianfeng.analystic.mr.out.OutputWritter;
+import com.qianfeng.analystic.model.dim.out.OutputWritter;
 import com.qianfeng.analystic.service.IDimensionConvert;
 
 import com.qianfeng.common.GlobalConstants;

@@ -86,13 +86,13 @@ public class LogToHDFSMapper extends Mapper<LongWritable, Text, NullWritable, Lo
                 ld.ac = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_EVENT_ACTION);
                 ld.kv_ = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_EVENT_KV);
                 ld.du = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_EVENT_DURATION);
-                ld.os = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_OS_NAME);
-                ld.os_v = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_OS_VERSION);
-                ld.browser = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME);
-                ld.browser_v = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME);
-                ld.country = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_COUNTRY);
-                ld.province = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_PROVINCE);
-                ld.city = clientInfo.get(EventLogConstants.EVENT_COLUME_NAME_CITY);
+                ld.os = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_OS_NAME);
+                ld.os_v = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_OS_VERSION);
+                ld.browser = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME);
+                ld.browser_v = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME);
+                ld.country = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_COUNTRY);
+                ld.province = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_PROVINCE);
+                ld.city = clientInfo.get(EventLogConstants.EVENT_COLUMN_NAME_CITY);
                 //输出
                 context.write(NullWritable.get(), ld);
                 outputRecords++;

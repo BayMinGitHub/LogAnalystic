@@ -28,7 +28,7 @@ public class NewMemberReducer extends Reducer<StatsUserDimension, TimeOutputValu
         this.unique.clear();
         // 循环map阶段传过来的value
         for (TimeOutputValue tv : values) {
-            // 将uuid取出来添加到set中
+            // 将memberId取出来添加到set中
             this.unique.add(tv.getId());
         }
         // 构建输出的value

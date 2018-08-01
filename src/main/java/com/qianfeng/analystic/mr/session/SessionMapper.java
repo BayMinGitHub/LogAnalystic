@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.mr.nm;
+package com.qianfeng.analystic.mr.session;
 
 import com.qianfeng.analystic.model.dim.base.BrowserDimension;
 import com.qianfeng.analystic.model.dim.base.DateDimension;
@@ -10,8 +10,6 @@ import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
 import com.qianfeng.common.DateEnum;
 import com.qianfeng.common.EventLogConstants;
 import com.qianfeng.common.KpiType;
-import com.qianfeng.util.JDBCUtil;
-import com.qianfeng.util.MemberUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -20,88 +18,66 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.lang.reflect.Member;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @Description: 活跃会员
- * Author by BayMin, Date on 2018/7/31.
+ * @Description: 新增的用户和新增的总用户统计的Mapper类, 需要Launch时间中的uuid为一个数
+ * Author by BayMin, Date on 2018/7/27.
  */
-public class NewMemberMapper extends TableMapper<StatsUserDimension, TimeOutputValue> {
-    private static final Logger logger = Logger.getLogger(com.qianfeng.analystic.mr.nu.NewUserMapper.class);
+public class SessionMapper extends TableMapper<StatsUserDimension, TimeOutputValue> {
+    private static final Logger logger = Logger.getLogger(SessionMapper.class);
     private byte[] family = Bytes.toBytes(EventLogConstants.HBASE_COLUMN_FAMILY);
     private StatsUserDimension k = new StatsUserDimension();
     private TimeOutputValue v = new TimeOutputValue();
-    private KpiDimension newMember = new KpiDimension(KpiType.NEW_MEMBER.kpiName);
-    private KpiDimension browserNewMemberKpi = new KpiDimension(KpiType.BROWSER_NEW_MEMBER.kpiName);
-    private Connection conn = null;
-
-    @Override
-    protected void setup(Context context) throws IOException, InterruptedException {
-        conn = JDBCUtil.getConn();
-    }
+    private KpiDimension sessionKpi = new KpiDimension(KpiType.SESSION.kpiName);
+    private KpiDimension browserSessionKpi = new KpiDimension(KpiType.BROWSER_SESSION.kpiName);
 
     @Override
     protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
         // 获取需要的字段
-        String memberId = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_MEMBER_ID)));
+        // TODO 老师讲BUG时认真听讲
+        String sessionId = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_SESSION_ID)));
         String serverTime = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_SERVER_TIME)));
         String platform = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_PLATFORM)));
         String browserName = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME)));
         String browserVersion = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_BROWSER_VERSION)));
 
         // 对三个字段进行空判断
-        if (StringUtils.isEmpty(memberId) || StringUtils.isEmpty(serverTime) || StringUtils.isEmpty(platform)) {
-            logger.warn("uuid,serverTime,platform中有空值" + "memberId = " + memberId + "serverTime" + serverTime + "platform" + platform);
+        if (StringUtils.isEmpty(sessionId) || StringUtils.isEmpty(serverTime) || StringUtils.isEmpty(platform)) {
+            logger.warn("sessionId,serverTime,platform中有空值" + "sessionId = " + sessionId + "serverTime" + serverTime + "platform" + platform);
             return;
         }
-        // 判断memberId是否合法和存在
-        if (!MemberUtil.checkMemberId(memberId)) { // 不合法
-            logger.warn("该会员名不合法:" + memberId);
-            return;
-        }
-        if (!MemberUtil.isNewMember(memberId, conn, context.getConfiguration())) { // 不是新增
-            logger.warn("该会员不是新增会员:" + memberId);
-            return;
-        }
-        logger.warn("该会员是新增会员:" + memberId);
+
         // 构建输出的value
         long serverTimeOfLong = Long.valueOf(serverTime);
-        this.v.setId(memberId);
+        this.v.setId(sessionId);
         this.v.setTime(serverTimeOfLong);
 
         // 构建输出的key
         List<PlatFormDimension> platFormDimensions = PlatFormDimension.buildList(platform);
         DateDimension dateDimension = DateDimension.buildDate(serverTimeOfLong, DateEnum.DAY);
         List<BrowserDimension> browserDimensionList = BrowserDimension.buildList(browserName, browserVersion);
-        StatsCommonDimension statsCommonDimension = this.k.getStatsCommonDimension();
 
-        BrowserDimension defaultBrowserDimension = new BrowserDimension("", "");
+        StatsCommonDimension statsCommonDimension = this.k.getStatsCommonDimension();
         // 为statsCommonDimension赋值
         statsCommonDimension.setDateDimension(dateDimension);
+
+        BrowserDimension defaultBrowserDimension = new BrowserDimension("", "");
         // 循环平台维度集合对象
         for (PlatFormDimension pl : platFormDimensions) {
-            statsCommonDimension.setKpiDimension(newMember);
+            statsCommonDimension.setKpiDimension(sessionKpi);
             statsCommonDimension.setPlatFormDimension(pl);
             this.k.setStatsCommonDimension(statsCommonDimension);
             this.k.setBrowserDimesion(defaultBrowserDimension);
             // 输出
             context.write(this.k, this.v);
+
             for (BrowserDimension dimension : browserDimensionList) {
-                statsCommonDimension.setKpiDimension(browserNewMemberKpi);
+                statsCommonDimension.setKpiDimension(browserSessionKpi);
                 this.k.setStatsCommonDimension(statsCommonDimension);
                 this.k.setBrowserDimesion(dimension);
                 context.write(this.k, this.v);
             }
         }
-    }
-
-    @Override
-    protected void cleanup(Context context) throws IOException, InterruptedException {
-        JDBCUtil.close(conn, null, null);
     }
 }

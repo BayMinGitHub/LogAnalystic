@@ -54,8 +54,8 @@
         <name>install_new_member</name>
         <value>
             insert into `member_info`
-            (`member_id`,`last_visit_date`,`created`)
-            values(?,?,?) on duplicate key update `last_visit_date` = ?
+            (`member_id`,`last_visit_date`,`member_id_server_date`,`created`)
+            values(?,?,?,?) on duplicate key update `last_visit_date` = ?
         </value>
     </property>
     <property>
@@ -72,6 +72,22 @@
             insert into `stats_device_browser`
             (`date_dimension_id`,`platform_dimension_id`,`browser_dimension_id`,`new_members`,`created`)
             values(?,?,?,?,?) on duplicate key update `new_members` = ?
+        </value>
+    </property>
+    <property>
+        <name>session</name>
+        <value>
+            insert into `stats_user`
+            (`date_dimension_id`,`platform_dimension_id`,`sessions`,`sessions_length`,`created`)
+            values(?,?,?,?,?) on duplicate key update `sessions` = ? , `sessions_length` = ?
+        </value>
+    </property>
+    <property>
+        <name>browser_session</name>
+        <value>
+            insert into `stats_device_browser`
+            (`date_dimension_id`,`platform_dimension_id`,`browser_dimension_id`,`sessions`,`sessions_length`,`created`)
+            values(?,?,?,?,?,?) on duplicate key update `sessions` = ? , `sessions_length` = ?
         </value>
     </property>
 </configuration>

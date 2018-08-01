@@ -5,7 +5,7 @@ import com.qianfeng.analystic.model.dim.base.DateDimension;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
 import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
 import com.qianfeng.analystic.model.dim.value.MapWritableValue;
-import com.qianfeng.analystic.mr.out.OutputWritterFormat;
+import com.qianfeng.analystic.model.dim.out.OutputWritterFormat;
 import com.qianfeng.analystic.service.IDimensionConvert;
 import com.qianfeng.analystic.service.impl.IDimensionConvertImpl;
 import com.qianfeng.common.DateEnum;
@@ -74,7 +74,7 @@ public class NewUserRunner implements Tool {
         // conf.set("mapred.jar", "target/LogAnalystic-1.0-SNAPSHOT.jar");
         // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), NewUserMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, true);
+                TimeOutputValue.class, job, false);
 
         // reducer的设置
         job.setReducerClass(NewUserReducer.class);

@@ -1,4 +1,4 @@
-package com.qianfeng.analystic.mr.out;
+package com.qianfeng.analystic.model.dim.out;
 
 import com.qianfeng.analystic.model.dim.base.BaseDimension;
 import com.qianfeng.analystic.model.dim.value.OutputValueBaseWritable;

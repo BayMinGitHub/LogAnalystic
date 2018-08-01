@@ -48,4 +48,14 @@
         <value>com.qianfeng.analystic.mr.nm.NewMemberOutputWritter</value>
     </property>
 
+    <property>
+        <name>output_session</name>
+        <value>com.qianfeng.analystic.mr.session.SessionOutputWritter</value>
+    </property>
+
+    <property>
+        <name>output_browser_session</name>
+        <value>com.qianfeng.analystic.mr.session.SessionOutputWritter</value>
+    </property>
+
 </configuration>

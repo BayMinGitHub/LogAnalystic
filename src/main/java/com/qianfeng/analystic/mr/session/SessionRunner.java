@@ -1,12 +1,19 @@
-package com.qianfeng.analystic.mr.am;
+package com.qianfeng.analystic.mr.session;
 
 import com.google.common.collect.Lists;
+import com.qianfeng.analystic.model.dim.base.DateDimension;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
-import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
-import com.qianfeng.analystic.model.dim.value.MapWritableValue;
 import com.qianfeng.analystic.model.dim.out.OutputWritterFormat;
+import com.qianfeng.analystic.model.dim.value.MapWritableValue;
+import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
+import com.qianfeng.analystic.mr.nu.NewUserMapper;
+import com.qianfeng.analystic.mr.nu.NewUserReducer;
+import com.qianfeng.analystic.service.IDimensionConvert;
+import com.qianfeng.analystic.service.impl.IDimensionConvertImpl;
+import com.qianfeng.common.DateEnum;
 import com.qianfeng.common.EventLogConstants;
 import com.qianfeng.common.GlobalConstants;
+import com.qianfeng.util.JDBCUtil;
 import com.qianfeng.util.TimeUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -19,19 +26,26 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 驱动类
  * Author by BayMin, Date on 2018/7/30.
  */
-public class ActiveMemberRunner implements Tool {
-    private static final Logger logger = Logger.getLogger(ActiveMemberRunner.class);
+public class SessionRunner implements Tool {
+    private static final Logger logger = Logger.getLogger(SessionRunner.class);
     private Configuration conf = new Configuration();
 
     public static void main(String[] args) {
         try {
-            ToolRunner.run(new Configuration(), new ActiveMemberRunner(), args);
+            ToolRunner.run(new Configuration(), new SessionRunner(), args);
         } catch (Exception e) {
             logger.warn("运行新增用户指标失败", e);
         }
@@ -54,14 +68,17 @@ public class ActiveMemberRunner implements Tool {
         Configuration conf = getConf();
         this.setArgs(args, conf);
         // 获取作业
-        Job job = Job.getInstance(conf, "active member");
-        job.setJarByClass(ActiveMemberRunner.class);
+        Job job = Job.getInstance(conf, "session");
+        job.setJarByClass(SessionRunner.class);
         // 初始化mapper类
+        // 集群运行时还需要将Jar放入,以便于添加依赖Jar包
+        // conf.set("mapred.jar", "target/LogAnalystic-1.0-SNAPSHOT.jar");
         // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
-        TableMapReduceUtil.initTableMapperJob(this.getScans(job), ActiveMemberMapper.class, StatsUserDimension.class,
+        TableMapReduceUtil.initTableMapperJob(this.getScans(job), SessionMapper.class, StatsUserDimension.class,
                 TimeOutputValue.class, job, false);
+
         // reducer的设置
-        job.setReducerClass(ActiveMemberReducer.class);
+        job.setReducerClass(SessionReducer.class);
         job.setOutputKeyClass(StatsUserDimension.class);
         job.setOutputValueClass(MapWritableValue.class);
         // 设置输出的格式类型
@@ -100,18 +117,18 @@ public class ActiveMemberRunner implements Tool {
         scan.setStopRow(Bytes.toBytes(end + ""));
         // 定义过滤器
         FilterList fl = new FilterList();
-        fl.addFilter(new SingleColumnValueFilter(Bytes.toBytes(EventLogConstants.HBASE_COLUMN_FAMILY),
-                Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME),
-                CompareFilter.CompareOp.EQUAL, Bytes.toBytes(EventLogConstants.EventEnum.PAGEVIEW.alias)));
-        // TODO 注意上面的过滤条件!!!和自己的数据!!!
-        // 设置扫描的字段x
+        // fl.addFilter(new SingleColumnValueFilter(Bytes.toBytes(EventLogConstants.HBASE_COLUMN_FAMILY),
+        //         Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME),
+        //         CompareFilter.CompareOp.EQUAL, Bytes.toBytes(EventLogConstants.EventEnum.PAGEVIEW.alias)));
+        // TODO 此处添加所有类型的数据
+        // 设置扫描的字段
         String[] fields = {
                 EventLogConstants.EVENT_COLUMN_NAME_SERVER_TIME,
-                EventLogConstants.EVENT_COLUMN_NAME_MEMBER_ID,
+                EventLogConstants.EVENT_COLUMN_NAME_SESSION_ID,
                 EventLogConstants.EVENT_COLUMN_NAME_PLATFORM,
+                EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME,
                 EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME,
-                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_VERSION,
-                EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME
+                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_VERSION
         };
         // 将扫描的字段添加到filter中
         fl.addFilter(this.getFilters(fields));

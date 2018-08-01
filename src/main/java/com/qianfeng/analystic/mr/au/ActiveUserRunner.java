@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.qianfeng.analystic.model.dim.key.StatsUserDimension;
 import com.qianfeng.analystic.model.dim.value.TimeOutputValue;
 import com.qianfeng.analystic.model.dim.value.MapWritableValue;
-import com.qianfeng.analystic.mr.out.OutputWritterFormat;
+import com.qianfeng.analystic.model.dim.out.OutputWritterFormat;
 import com.qianfeng.common.EventLogConstants;
 import com.qianfeng.common.GlobalConstants;
 import com.qianfeng.util.TimeUtil;
@@ -54,7 +54,7 @@ public class ActiveUserRunner implements Tool {
         Configuration conf = getConf();
         this.setArgs(args, conf);
         // 获取作业
-        Job job = Job.getInstance(conf, "new users");
+        Job job = Job.getInstance(conf, "active users");
         job.setJarByClass(ActiveUserRunner.class);
         // 初始化mapper类
         // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
