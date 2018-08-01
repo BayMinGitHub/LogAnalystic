@@ -70,9 +70,12 @@ public class NewUserRunner implements Tool {
         Job job = Job.getInstance(conf, "new users");
         job.setJarByClass(NewUserRunner.class);
         // 初始化mapper类
+        // 集群运行时还需要将Jar放入,以便于添加依赖Jar包
+        // conf.set("mapred.jar", "target/LogAnalystic-1.0-SNAPSHOT.jar");
         // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), NewUserMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, false);
+                TimeOutputValue.class, job, true);
+
         // reducer的设置
         job.setReducerClass(NewUserReducer.class);
         job.setOutputKeyClass(StatsUserDimension.class);
@@ -210,8 +213,8 @@ public class NewUserRunner implements Tool {
                 EventLogConstants.EVENT_COLUMN_NAME_UUID,
                 EventLogConstants.EVENT_COLUMN_NAME_PLATFORM,
                 EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME,
-                EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME,
-                EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION
+                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME,
+                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_VERSION
         };
         // 将扫描的字段添加到filter中
         fl.addFilter(this.getFilters(fields));

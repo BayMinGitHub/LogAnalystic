@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 
 /**
- * @Description: 驱动类
+ * @Description: 写入HBase的驱动类
  * Author by BayMin, Date on 2018/7/26.
  */
 public class LogToHbaseRunner implements Tool {

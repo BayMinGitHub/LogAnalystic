@@ -81,14 +81,14 @@ public class EventLogConstants {
     /**
      * 浏览器相关数据
      */
-    public static final String EVENT_COLUME_NAME_BROWSER_NAME = "browserName";
-    public static final String EVENT_COLUME_NAME_BROWSER_VERSION = "browserVersion";
-    public static final String EVENT_COLUME_NAME_OS_NAME = "osName";
-    public static final String EVENT_COLUME_NAME_OS_VERSION = "osVersion";
+    public static final String EVENT_COLUMN_NAME_BROWSER_NAME = "browserName";
+    public static final String EVENT_COLUMN_NAME_BROWSER_VERSION = "browserVersion";
+    public static final String EVENT_COLUMN_NAME_OS_NAME = "osName";
+    public static final String EVENT_COLUMN_NAME_OS_VERSION = "osVersion";
     /**
      * 地域相关
      */
-    public static final String EVENT_COLUME_NAME_COUNTRY = "country";
-    public static final String EVENT_COLUME_NAME_PROVINCE = "province";
-    public static final String EVENT_COLUME_NAME_CITY = "city";
+    public static final String EVENT_COLUMN_NAME_COUNTRY = "country";
+    public static final String EVENT_COLUMN_NAME_PROVINCE = "province";
+    public static final String EVENT_COLUMN_NAME_CITY = "city";
 }

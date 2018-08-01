@@ -106,8 +106,8 @@ public class ActiveUserRunner implements Tool {
                 EventLogConstants.EVENT_COLUMN_NAME_UUID,
                 EventLogConstants.EVENT_COLUMN_NAME_PLATFORM,
                 EventLogConstants.EVENT_COLUMN_NAME_EVENT_NAME,
-                EventLogConstants.EVENT_COLUME_NAME_BROWSER_NAME,
-                EventLogConstants.EVENT_COLUME_NAME_BROWSER_VERSION
+                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_NAME,
+                EventLogConstants.EVENT_COLUMN_NAME_BROWSER_VERSION
         };
         // 将扫描的字段添加到filter中
         fl.addFilter(this.getFilters(fields));

@@ -15,7 +15,8 @@ import java.util.Map;
 import java.util.zip.CRC32;
 
 /**
- * @Description: Author by BayMin, Date on 2018/7/26.
+ * @Description: 写入HBase的Mapper类
+ * Author by BayMin, Date on 2018/7/26.
  */
 public class LogToHbaseMapper extends Mapper<Object, Text, NullWritable, Put> {
     private static final Logger logger = Logger.getLogger(LogToHbaseMapper.class);
