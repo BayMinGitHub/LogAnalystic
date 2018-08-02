@@ -44,7 +44,7 @@ public class ActiveUserOutputWritter implements OutputWritter {
             case HOURLY_ACTIVE_USER:
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
-                ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getKpiDimension()));
+                ps.setInt(++i, convert.getDimensionIDByDimension(value));  // 从value中获取kpi
                 for (int j = 1; j < 25; j++) {
                     int count = ((IntWritable) ((MapWritableValue) value).getValue().get(new IntWritable(-j))).get();
                     ps.setInt(++i, count);

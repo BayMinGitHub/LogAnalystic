@@ -2,16 +2,12 @@ package com.bay.analystic.mr.location;
 
 import com.bay.analystic.model.dim.base.BaseDimension;
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
-import com.bay.analystic.model.dim.key.StatsUserDimension;
 import com.bay.analystic.model.dim.out.OutputWritter;
 import com.bay.analystic.model.dim.value.LocationReducerOutputWritable;
-import com.bay.analystic.model.dim.value.MapWritableValue;
 import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 import com.bay.analystic.service.IDimensionConvert;
 import com.bay.common.GlobalConstants;
-import com.bay.common.KpiType;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.IntWritable;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;

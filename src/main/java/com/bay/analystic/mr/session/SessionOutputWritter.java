@@ -45,7 +45,21 @@ public class SessionOutputWritter implements OutputWritter {
             case HOURLY_SESSION:
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
                 ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
-                ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getKpiDimension()));
+                ps.setInt(++i, convert.getDimensionIDByDimension(value));
+                for (int j = 1; j < 25; j++) {
+                    int count = ((IntWritable) ((MapWritableValue) value).getValue().get(new IntWritable(-j))).get();
+                    ps.setInt(++i, count);
+                }
+                ps.setString(++i, conf.get(GlobalConstants.RUNNING_DATE));
+                for (int j = 1; j < 25; j++) {
+                    int count = ((IntWritable) ((MapWritableValue) value).getValue().get(new IntWritable(-j))).get();
+                    ps.setInt(++i, count);
+                }
+                break;
+            case HOURLY_SESSION_LENGTH:
+                ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getPlatFormDimension()));
+                ps.setInt(++i, convert.getDimensionIDByDimension(statsUserDimension.getStatsCommonDimension().getDateDimension()));
+                ps.setInt(++i, convert.getDimensionIDByDimension(value));
                 for (int j = 1; j < 25; j++) {
                     int count = ((IntWritable) ((MapWritableValue) value).getValue().get(new IntWritable(-j))).get();
                     ps.setInt(++i, count);

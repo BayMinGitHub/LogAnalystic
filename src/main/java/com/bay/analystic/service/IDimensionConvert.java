@@ -1,6 +1,7 @@
 package com.bay.analystic.service;
 
 import com.bay.analystic.model.dim.base.BaseDimension;
+import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,4 +13,6 @@ import java.sql.SQLException;
 public interface IDimensionConvert {
     // 据维度对象获取对应维度的id接口
     int getDimensionIDByDimension(BaseDimension baseDimension) throws IOException, SQLException;
+
+    int getDimensionIDByDimension(OutputValueBaseWritable outputValueBaseWritable) throws IOException, SQLException;
 }

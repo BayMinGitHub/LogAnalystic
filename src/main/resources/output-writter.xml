@@ -69,6 +69,11 @@
     </property>
 
     <property>
+        <name>output_hourly_session_length</name>
+        <value>com.bay.analystic.mr.session.SessionOutputWritter</value>
+    </property>
+
+    <property>
         <name>output_page_view</name>
         <value>com.bay.analystic.mr.pv.PageViewOutputWritter</value>
     </property>

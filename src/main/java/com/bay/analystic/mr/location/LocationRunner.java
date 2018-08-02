@@ -1,21 +1,11 @@
 package com.bay.analystic.mr.location;
 
-import com.bay.analystic.model.dim.base.DateDimension;
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
-import com.bay.analystic.model.dim.key.StatsUserDimension;
 import com.bay.analystic.model.dim.out.OutputWritterFormat;
 import com.bay.analystic.model.dim.value.LocationReducerOutputWritable;
-import com.bay.analystic.model.dim.value.MapWritableValue;
 import com.bay.analystic.model.dim.value.TextOutputValue;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
-import com.bay.analystic.mr.nu.NewUserMapper;
-import com.bay.analystic.mr.nu.NewUserReducer;
-import com.bay.analystic.service.IDimensionConvert;
-import com.bay.analystic.service.impl.IDimensionConvertImpl;
-import com.bay.common.DateEnum;
 import com.bay.common.EventLogConstants;
 import com.bay.common.GlobalConstants;
-import com.bay.util.JDBCUtil;
 import com.bay.util.TimeUtil;
 import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
@@ -29,14 +19,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 驱动类

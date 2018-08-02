@@ -3,9 +3,7 @@ package com.bay.analystic.mr.location;
 import com.bay.analystic.model.dim.base.*;
 import com.bay.analystic.model.dim.key.StatsCommonDimension;
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
-import com.bay.analystic.model.dim.key.StatsUserDimension;
 import com.bay.analystic.model.dim.value.TextOutputValue;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
 import com.bay.common.DateEnum;
 import com.bay.common.EventLogConstants;
 import com.bay.common.KpiType;
@@ -20,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @Description: 新增的用户和新增的总用户统计的Mapper类, 需要Launch时间中的uuid为一个数
+ * @Description: Location的Mapper类
  * Author by BayMin, Date on 2018/7/27.
  */
 public class LocationMapper extends TableMapper<StatsLocationDimension, TextOutputValue> {
@@ -41,11 +39,15 @@ public class LocationMapper extends TableMapper<StatsLocationDimension, TextOutp
         String province = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_PROVINCE)));
         String city = Bytes.toString(value.getValue(family, Bytes.toBytes(EventLogConstants.EVENT_COLUMN_NAME_CITY)));
 
-        // 对三个字段进行空判断
-        if (StringUtils.isEmpty(uuid) || StringUtils.isEmpty(serverTime) || StringUtils.isEmpty(platform)) {
-            logger.warn("uuid,serverTime,platform中有空值" + "uuid = " + uuid + "serverTime" + serverTime + "platform" + platform);
+        // 对字段进行空判断
+        if (StringUtils.isEmpty(serverTime) || StringUtils.isEmpty(platform)) {
+            logger.warn("serverTime,platform中有空值" + "serverTime" + serverTime + "platform" + platform);
             return;
         }
+        if (uuid == null)
+            uuid = "";
+        if (sessionId == null)
+            sessionId = "";
 
         // 构建输出的value
         long serverTimeOfLong = Long.valueOf(serverTime);

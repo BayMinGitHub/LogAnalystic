@@ -20,7 +20,7 @@ import java.util.*;
 public class ActiveUserReducer extends Reducer<StatsUserDimension, TimeOutputValue, StatsUserDimension, MapWritableValue> {
     // 用来去重
     private Set<String> unique = new HashSet<>();
-    private Map<Integer, Integer> map = new HashMap<>();
+    private Map<Integer, Integer> mapCount = new HashMap<>();
     private MapWritableValue v = new MapWritableValue();
 
     @Override
@@ -28,23 +28,26 @@ public class ActiveUserReducer extends Reducer<StatsUserDimension, TimeOutputVal
         MapWritable mapWritable = new MapWritable();
         // 清空unique
         this.unique.clear();
+        this.mapCount.clear();
         // 循环给map赋值
         for (int i = 1; i < 25; i++) {
-            map.put(i, 0);
+            mapCount.put(i, 0);
         }
         // 循环map阶段传过来的value
         for (TimeOutputValue tv : values) {
-            // 将uuid取出来添加到set中
-            this.unique.add(tv.getId());
             // 将时间取出
-            long serverTime = tv.getTime();
-            int hour = TimeUtil.getDateInfo(serverTime, DateEnum.HOUR) + 1;
-            int count = map.get(hour);
-            count++;
-            map.put(hour, count);
+            String uuid = tv.getId();
+            if (!unique.contains(uuid)) { // 去重
+                long serverTime = tv.getTime();
+                int hour = TimeUtil.getDateInfo(serverTime, DateEnum.HOUR) + 1;
+                int count = mapCount.get(hour);
+                count++;
+                mapCount.put(hour, count);
+                this.unique.add(tv.getId());
+            }
         }
         this.v.setKpi(KpiType.HOURLY_ACTIVE_USER);
-        for (Map.Entry<Integer, Integer> en : map.entrySet()) {
+        for (Map.Entry<Integer, Integer> en : mapCount.entrySet()) {
             mapWritable.put(new IntWritable(-en.getKey()), new IntWritable(en.getValue()));
         }
         this.v.setValue(mapWritable);
