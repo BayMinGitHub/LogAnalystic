@@ -1,0 +1,94 @@
+1.创建时间的基础维度类,不需要使用集合维度对象
+
+2.创建获取维度id的udf函数
+
+3.创建hive表映射每一天的数据,创建成分区表
+create external table if not exists ods_logs (
+s_time string,
+en string,
+ver string,
+u_ud string,
+u_mid string,
+u_sid string,
+c_time string,
+language  string,
+b_iev string,
+b_rst string,
+p_url string,
+p_ref string,
+tt string,
+pl string,
+o_id string,
+`on` string,
+cut string,
+cua string,
+pt string,
+ca string,
+ac string,
+kv_ string,
+du string,
+os string,
+os_v string,
+browser string,
+browser_v string,
+country string,
+province string,
+city string
+) partitioned by ( month String , day string )
+row format delimited fields terminated by '\001';
+
+--加载数据
+load data inpath '/ods/month=07/day=09' into table ods_logs partition ( month = 07 , day = 09 );
+load data inpath '/ods/month=07/day=10' into table ods_logs partition ( month = 07 , day = 10 );
+
+4.创建最终结果表
+create external table if not exists stats_event (
+    `platform_dimension_id` int,
+    `date_dimension_id` int,
+    `event_dimension_id` int,
+    `times` int,
+    `created` string
+    );
+
+5.写hql
+
+create external table if not exists dw_event(
+s_time string,
+ en string,
+ pl string,
+ ca string,
+ ac string
+ )
+ partitioned by(month String,day string)
+ row format delimited fields terminated by '\001';
+
+--抽取数据
+insert into table dw_event partition(month=08,day=01)
+select s_time,en,pl,ca,ac from ods_logs where month=08 and day=01;
+
+
+
+    -d 2018-07-31
+
+    select
+        de.s_time, // 使用内部函数转换成日期
+                        de.pl,
+                        de.ca,
+                        de.ac,
+                        count(1)
+        form logs de
+        where pl is not null
+        and de.month = 7
+        and de.day = 26
+        group by de.s_time,de.pl,de.ca,de.ac;
+
+6.扩展维度
+
+7.使用sqoop语句将结果导出到mysql中
+    sqoop export --connection jdbc: xxx --username xxx --password xxx .....
+
+8.将整个封装成shell脚本
+    判断时间,当时间没有则默认使用昨天的时间在执行
+    hive --database default -e "
+    语句
+    ";

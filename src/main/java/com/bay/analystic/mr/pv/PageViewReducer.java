@@ -1,8 +1,8 @@
 package com.bay.analystic.mr.pv;
 
 import com.bay.analystic.model.dim.key.StatsUserDimension;
-import com.bay.analystic.model.dim.value.MapWritableValue;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
+import com.bay.analystic.model.dim.value.reduce.MapWritableValue;
+import com.bay.analystic.model.dim.value.map.TimeOutputValue;
 import com.bay.common.KpiType;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -10,9 +10,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Description: 新增的用户和新增的总用户统计的Reducer类

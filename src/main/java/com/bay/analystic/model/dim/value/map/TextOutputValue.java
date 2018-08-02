@@ -1,5 +1,6 @@
-package com.bay.analystic.model.dim.value;
+package com.bay.analystic.model.dim.value.map;
 
+import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 import com.bay.common.KpiType;
 
 import java.io.DataInput;
@@ -7,12 +8,12 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * @Description: 用户模块和地域信息模块输出的value数据类型
+ * @Description: 地域信息模块map输出的value数据类型
  * Author by BayMin, Date on 2018/8/2.
  */
 public class TextOutputValue extends OutputValueBaseWritable {
     private String uuid;
-    private String sessionId;
+    private String item; // sessionId,event
 
     @Override
     public KpiType getKpi() {
@@ -22,13 +23,13 @@ public class TextOutputValue extends OutputValueBaseWritable {
     @Override
     public void write(DataOutput out) throws IOException {
         out.writeUTF(this.uuid);
-        out.writeUTF(this.sessionId);
+        out.writeUTF(this.item);
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
         this.uuid = in.readUTF();
-        this.sessionId = in.readUTF();
+        this.item = in.readUTF();
     }
 
     public String getUuid() {
@@ -39,11 +40,11 @@ public class TextOutputValue extends OutputValueBaseWritable {
         this.uuid = uuid;
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public String getItem() {
+        return item;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setItem(String itemId) {
+        this.item = itemId;
     }
 }

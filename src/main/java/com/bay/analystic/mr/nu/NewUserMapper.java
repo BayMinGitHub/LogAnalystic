@@ -6,7 +6,7 @@ import com.bay.analystic.model.dim.base.KpiDimension;
 import com.bay.analystic.model.dim.base.PlatFormDimension;
 import com.bay.analystic.model.dim.key.StatsCommonDimension;
 import com.bay.analystic.model.dim.key.StatsUserDimension;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
+import com.bay.analystic.model.dim.value.map.TimeOutputValue;
 import com.bay.common.DateEnum;
 import com.bay.common.EventLogConstants;
 import com.bay.common.KpiType;

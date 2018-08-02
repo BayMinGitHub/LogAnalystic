@@ -2,8 +2,8 @@ package com.bay.analystic.mr.location;
 
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
 import com.bay.analystic.model.dim.out.OutputWritterFormat;
-import com.bay.analystic.model.dim.value.LocationReducerOutputWritable;
-import com.bay.analystic.model.dim.value.TextOutputValue;
+import com.bay.analystic.model.dim.value.reduce.LocationReducerOutputWritable;
+import com.bay.analystic.model.dim.value.map.TextOutputValue;
 import com.bay.common.EventLogConstants;
 import com.bay.common.GlobalConstants;
 import com.bay.util.TimeUtil;

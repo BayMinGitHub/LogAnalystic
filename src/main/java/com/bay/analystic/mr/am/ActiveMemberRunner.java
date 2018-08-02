@@ -2,8 +2,8 @@ package com.bay.analystic.mr.am;
 
 import com.google.common.collect.Lists;
 import com.bay.analystic.model.dim.key.StatsUserDimension;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
-import com.bay.analystic.model.dim.value.MapWritableValue;
+import com.bay.analystic.model.dim.value.map.TimeOutputValue;
+import com.bay.analystic.model.dim.value.reduce.MapWritableValue;
 import com.bay.analystic.model.dim.out.OutputWritterFormat;
 import com.bay.common.EventLogConstants;
 import com.bay.common.GlobalConstants;

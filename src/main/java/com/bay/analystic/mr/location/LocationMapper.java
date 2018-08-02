@@ -3,7 +3,7 @@ package com.bay.analystic.mr.location;
 import com.bay.analystic.model.dim.base.*;
 import com.bay.analystic.model.dim.key.StatsCommonDimension;
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
-import com.bay.analystic.model.dim.value.TextOutputValue;
+import com.bay.analystic.model.dim.value.map.TextOutputValue;
 import com.bay.common.DateEnum;
 import com.bay.common.EventLogConstants;
 import com.bay.common.KpiType;
@@ -52,7 +52,7 @@ public class LocationMapper extends TableMapper<StatsLocationDimension, TextOutp
         // 构建输出的value
         long serverTimeOfLong = Long.valueOf(serverTime);
         this.v.setUuid(uuid);
-        this.v.setSessionId(sessionId);
+        this.v.setItem(sessionId);
 
         // 构建输出的key
         List<PlatFormDimension> platFormDimensions = PlatFormDimension.buildList(platform);

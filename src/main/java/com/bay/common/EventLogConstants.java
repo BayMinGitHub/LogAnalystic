@@ -73,6 +73,8 @@ public class EventLogConstants {
     public static final String EVENT_COLUMN_NAME_PAYMENT_TYPE = "pt";
     /**
      * 事件相关的数据参数
+     * 点击:点击时间 category 点赞,转发,喜欢,收藏
+     * 下单:下单时间
      */
     public static final String EVENT_COLUMN_NAME_EVENT_NAME_CATEGORY = "ca";
     public static final String EVENT_COLUMN_NAME_EVENT_ACTION = "ac";

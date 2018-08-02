@@ -3,7 +3,7 @@ package com.bay.analystic.mr.location;
 import com.bay.analystic.model.dim.base.BaseDimension;
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
 import com.bay.analystic.model.dim.out.OutputWritter;
-import com.bay.analystic.model.dim.value.LocationReducerOutputWritable;
+import com.bay.analystic.model.dim.value.reduce.LocationReducerOutputWritable;
 import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 import com.bay.analystic.service.IDimensionConvert;
 import com.bay.common.GlobalConstants;
@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * @Description: 为新增用户的ps赋值
+ * @Description: 为Location的ps赋值
  * Author by BayMin, Date on 2018/7/30.
  */
 public class LocationOutputWritter implements OutputWritter {

@@ -1,8 +1,8 @@
 package com.bay.analystic.mr.au;
 
 import com.bay.analystic.model.dim.key.StatsUserDimension;
-import com.bay.analystic.model.dim.value.TimeOutputValue;
-import com.bay.analystic.model.dim.value.MapWritableValue;
+import com.bay.analystic.model.dim.value.map.TimeOutputValue;
+import com.bay.analystic.model.dim.value.reduce.MapWritableValue;
 import com.bay.common.DateEnum;
 import com.bay.common.KpiType;
 import com.bay.util.TimeUtil;

@@ -1,8 +1,8 @@
 package com.bay.analystic.mr.location;
 
 import com.bay.analystic.model.dim.key.StatsLocationDimension;
-import com.bay.analystic.model.dim.value.LocationReducerOutputWritable;
-import com.bay.analystic.model.dim.value.TextOutputValue;
+import com.bay.analystic.model.dim.value.reduce.LocationReducerOutputWritable;
+import com.bay.analystic.model.dim.value.map.TextOutputValue;
 import com.bay.common.KpiType;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -32,9 +32,9 @@ public class LocationReducer extends Reducer<StatsLocationDimension, TextOutputV
         for (TextOutputValue tv : values) {
             // 将uuid取出来添加到set中
             this.unique.add(tv.getUuid());
-            String sessionId = tv.getSessionId();
+            String sessionId = tv.getItem();
             if (sessions.containsKey(sessionId))
-                this.sessions.put(sessionId, 2);
+                this.sessions.put(sessionId, 2); // 只点击一次的称作跳出数
             else
                 this.sessions.put(sessionId, 1);
         }

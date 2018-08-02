@@ -1,5 +1,6 @@
-package com.bay.analystic.model.dim.value;
+package com.bay.analystic.model.dim.value.reduce;
 
+import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 import com.bay.common.KpiType;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.WritableUtils;
@@ -9,7 +10,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * @Description: 用户模块和浏览器模块reduce阶段下的value输出的类
+ * @Description: 用户模块和浏览器模块以及事件模块reduce阶段下的value输出的类
  * Author by BayMin, Date on 2018/7/27.
  */
 public class MapWritableValue extends OutputValueBaseWritable {

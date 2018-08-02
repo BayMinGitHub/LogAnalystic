@@ -1,5 +1,6 @@
-package com.bay.analystic.model.dim.value;
+package com.bay.analystic.model.dim.value.map;
 
+import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
 import com.bay.common.KpiType;
 
 import java.io.DataInput;

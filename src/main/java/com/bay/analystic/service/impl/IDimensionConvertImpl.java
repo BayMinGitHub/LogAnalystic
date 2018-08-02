@@ -7,6 +7,7 @@ import com.bay.util.JDBCUtil;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -57,6 +58,8 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             sql = this.buildKpiSql();
         else if (baseDimension instanceof LocationDimension)
             sql = this.buildLocalSql();
+        else if (baseDimension instanceof EventDimension)
+            sql = this.buildEventSql();
         Connection conn = JDBCUtil.getConn();
         int id = -1;
         synchronized (this) {
@@ -99,7 +102,7 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             // 如果代码走到这里说明没有查询到,然后准备插入再取值
             ps = conn.prepareStatement(sql[1], Statement.RETURN_GENERATED_KEYS); // 返回生成的Key
             this.setArgs(baseDimension, ps);
-            ps.executeUpdate(); // 返回影响的函数
+            ps.executeUpdate();
             rs = ps.getGeneratedKeys(); // 返回GeneratedKey
             if (rs.next())
                 return rs.getInt(1);
@@ -167,6 +170,10 @@ public class IDimensionConvertImpl implements IDimensionConvert {
                 ps.setString(++i, locationDimension.getCountry());
                 ps.setString(++i, locationDimension.getProvince());
                 ps.setString(++i, locationDimension.getCity());
+            } else if (baseDimension instanceof EventDimension) {
+                EventDimension eventDimension = (EventDimension) baseDimension;
+                ps.setString(++i, eventDimension.getCategory());
+                ps.setString(++i, eventDimension.getAction());
             }
         } catch (SQLException e) {
             logger.warn("设置参数异常", e);
@@ -206,6 +213,12 @@ public class IDimensionConvertImpl implements IDimensionConvert {
         return new String[]{select, insert};
     }
 
+    private String[] buildEventSql() {
+        String select = "select id from `dimension_event` where `category` = ? and `action` = ?";
+        String insert = "insert into `dimension_event` (`category`,`action`) values (?,?)";
+        return new String[]{select, insert};
+    }
+
     private String buildCache(BaseDimension baseDimension) {
         StringBuffer sb = new StringBuffer();
         if (baseDimension instanceof DateDimension) {
@@ -230,6 +243,11 @@ public class IDimensionConvertImpl implements IDimensionConvert {
             sb.append(locationDimension.getCountry());
             sb.append(locationDimension.getProvince());
             sb.append(locationDimension.getCity());
+        } else if (baseDimension instanceof EventDimension) {
+            sb.append("event_");
+            EventDimension eventDimension = (EventDimension) baseDimension;
+            sb.append(eventDimension.getCategory());
+            sb.append(eventDimension.getAction());
         }
         return sb.length() == 0 ? null : sb.toString();
     }

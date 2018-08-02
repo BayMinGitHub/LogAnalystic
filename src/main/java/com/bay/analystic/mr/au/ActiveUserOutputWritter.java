@@ -3,17 +3,15 @@ package com.bay.analystic.mr.au;
 import com.bay.analystic.model.dim.base.BaseDimension;
 import com.bay.analystic.model.dim.key.StatsUserDimension;
 import com.bay.analystic.model.dim.value.OutputValueBaseWritable;
-import com.bay.analystic.model.dim.value.MapWritableValue;
+import com.bay.analystic.model.dim.value.reduce.MapWritableValue;
 import com.bay.analystic.model.dim.out.OutputWritter;
 import com.bay.analystic.service.IDimensionConvert;
 import com.bay.common.GlobalConstants;
 import com.bay.common.KpiType;
-import com.bay.util.JDBCUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
