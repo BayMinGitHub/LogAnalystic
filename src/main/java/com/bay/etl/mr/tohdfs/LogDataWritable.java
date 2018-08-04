@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * create external table if not exists logs(
  * s_time string,
- * en string,
+ * event string,
  * ver string,
  * u_ud string,
  * u_mid string,

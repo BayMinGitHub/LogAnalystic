@@ -5,13 +5,13 @@ use loganalystic;
 --用户深度分析
 --加载自定义UDF函数
 create temporary function date_convert as 'com.bay.analystic.hive.udf.DateDimensionUDF' using jar 'hdfs://hadoop010:9000/user/hive-jars/customUDF-lib/LogAnalystic-1.0-SNAPSHOT.jar';
- 
+
 create temporary function platform_convert as 'com.bay.analystic.hive.udf.PlatFormDimensionUDF' using jar 'hdfs://hadoop010:9000/user/hive-jars/customUDF-lib/LogAnalystic-1.0-SNAPSHOT.jar';
- 
+
 create temporary function event_convert as 'com.bay.analystic.hive.udf.EventDimensionUDF' using jar 'hdfs://hadoop010:9000/user/hive-jars/customUDF-lib/LogAnalystic-1.0-SNAPSHOT.jar';
 
 create temporary function kpi_convert as 'com.bay.analystic.hive.udf.KpiDimensionUDF' using jar 'hdfs://hadoop010:9000/user/hive-jars/customUDF-lib/LogAnalystic-1.0-SNAPSHOT.jar';
- 
+
 --创建Hive中的深度表(与Mysql中的对应)
 create table if not exists stats_view_depth (
 `platform_dimension_id` int,

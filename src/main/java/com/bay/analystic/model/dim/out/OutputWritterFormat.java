@@ -108,7 +108,7 @@ public class OutputWritterFormat extends OutputFormat<BaseDimension, OutputValue
                 try {
                     for (Map.Entry<KpiType, PreparedStatement> en : map.entrySet()) {
                         en.getValue().close();
-                        // map.remove(en.getKey());
+                        // map.remove(event.getKey());
                     }
                 } catch (SQLException e) {
                     logger.warn("关闭ps时异常", e);

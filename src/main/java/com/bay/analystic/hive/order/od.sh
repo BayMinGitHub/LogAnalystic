@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#./dp.sh -d 2018-08-01
+#./od.sh -d 2018-08-01
 
 #获取输入的日期参数
 run_date=
@@ -34,7 +34,7 @@ echo "
 "
 
 #执行HQL语句
-hive -f /home/logAnalystic/depth/dp.sql -hiveconf month=${month} -hiveconf day=${day} >> /home/logAnalystic/depth/result.txt
+hive -f /home/logAnalystic/order/od.sql -hiveconf month=${month} -hiveconf day=${day} >> /home/logAnalystic/order/result.txt
 
 echo "
 ###############################################
@@ -43,6 +43,6 @@ echo "
 "
 
 #执行sqoop
-sqoop export --connect jdbc:mysql://hadoop010:3306/result --username root --password 19950116 --table stats_view_depth --export-dir hdfs://hadoop010:9000/user/hive/warehouse/loganalystic.db/stats_view_depth --input-fields-terminated-by '\001' --update-mode allowinsert
+sqoop export --connect jdbc:mysql://hadoop010:3306/result --username root --password 19950116 --table stats_order --export-dir hdfs://hadoop010:9000/user/hive/warehouse/loganalystic.db/stats_order --input-fields-terminated-by '\001' --update-mode allowinsert
 
 echo "OK!!"
