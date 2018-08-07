@@ -58,8 +58,10 @@ public class ActiveUserRunner implements Tool {
         job.setJarByClass(ActiveUserRunner.class);
         // 初始化mapper类
         // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
+        // TableMapReduceUtil.initTableMapperJob(this.getScans(job), ActiveUserMapper.class, StatsUserDimension.class,
+        //         TimeOutputValue.class, job, false);
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), ActiveUserMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, false);
+                TimeOutputValue.class, job);
         // reducer的设置
         job.setReducerClass(ActiveUserReducer.class);
         job.setOutputKeyClass(StatsUserDimension.class);

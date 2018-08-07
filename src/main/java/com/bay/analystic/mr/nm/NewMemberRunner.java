@@ -72,9 +72,11 @@ public class NewMemberRunner implements Tool {
         Job job = Job.getInstance(conf, "new member");
         job.setJarByClass(NewMemberRunner.class);
         // 初始化mapper类
-        // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
+        // addDependencyJars:true是集群运行,false是本地提交本地运行
+        // TableMapReduceUtil.initTableMapperJob(this.getScans(job), NewMemberMapper.class, StatsUserDimension.class,
+        //         TimeOutputValue.class, job, false);
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), NewMemberMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, false);
+                TimeOutputValue.class, job);
         // reducer的设置
         job.setReducerClass(NewMemberReducer.class);
         job.setOutputKeyClass(StatsUserDimension.class);

@@ -33,7 +33,7 @@ public class ActiveMemberRunner implements Tool {
         try {
             ToolRunner.run(new Configuration(), new ActiveMemberRunner(), args);
         } catch (Exception e) {
-            logger.warn("运行新增用户指标失败", e);
+            logger.warn("运行新增用户指标失败 ", e);
         }
     }
 
@@ -57,9 +57,11 @@ public class ActiveMemberRunner implements Tool {
         Job job = Job.getInstance(conf, "active member");
         job.setJarByClass(ActiveMemberRunner.class);
         // 初始化mapper类
-        // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
+        // addDependencyJars:true是集群运行,false是本地提交本地运行
+        // TableMapReduceUtil.initTableMapperJob(this.getScans(job), ActiveMemberMapper.class, StatsUserDimension.class,
+        //           TimeOutputValue.class, job, false);
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), ActiveMemberMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, false);
+                TimeOutputValue.class, job);
         // reducer的设置
         job.setReducerClass(ActiveMemberReducer.class);
         job.setOutputKeyClass(StatsUserDimension.class);

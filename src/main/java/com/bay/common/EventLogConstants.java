@@ -32,6 +32,8 @@ public class EventLogConstants {
         public static EventEnum valueOfAlias(String alias) {
             // for循环
             for (EventEnum event : values()) {
+                if (alias == null)
+                    throw new RuntimeException("别名为空");
                 if (alias.equals(event.alias))
                     return event;
             }
@@ -49,7 +51,7 @@ public class EventLogConstants {
      */
     public static final String EVENT_COLUMN_NAME_VERSION = "ver";
     public static final String EVENT_COLUMN_NAME_SERVER_TIME = "s_time";
-    public static final String EVENT_COLUMN_NAME_EVENT_NAME = "event";
+    public static final String EVENT_COLUMN_NAME_EVENT_NAME = "en";
     public static final String EVENT_COLUMN_NAME_UUID = "u_ud";
     public static final String EVENT_COLUMN_NAME_MEMBER_ID = "u_mid";
     public static final String EVENT_COLUMN_NAME_SESSION_ID = "u_sd";

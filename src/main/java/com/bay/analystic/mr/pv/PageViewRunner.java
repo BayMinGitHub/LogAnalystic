@@ -60,9 +60,11 @@ public class PageViewRunner implements Tool {
         // 初始化mapper类
         // 集群运行时还需要将Jar放入,以便于添加依赖Jar包
         // conf.set("mapred.jar", "target/LogAnalystic-1.0-SNAPSHOT.jar");
-        // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
+        // addDependencyJars:true是集群运行,false是本地提交本地运行
+        // TableMapReduceUtil.initTableMapperJob(this.getScans(job), PageViewMapper.class, StatsUserDimension.class,
+        //         TimeOutputValue.class, job, false);
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), PageViewMapper.class, StatsUserDimension.class,
-                TimeOutputValue.class, job, false);
+                TimeOutputValue.class, job);
 
         // reducer的设置
         job.setReducerClass(PageViewReducer.class);

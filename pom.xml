@@ -8,6 +8,20 @@
     <artifactId>LogAnalystic</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!--下载CDH开发环境时使用的配置,setting中的三方源需要注释掉-->
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>cloudera-releases</id>-->
+    <!--<url>https://repository.cloudera.com/artifactory/cloudera-repos</url>-->
+    <!--<releases>-->
+    <!--<enabled>true</enabled>-->
+    <!--</releases>-->
+    <!--<snapshots>-->
+    <!--<enabled>false</enabled>-->
+    <!--</snapshots>-->
+    <!--</repository>-->
+    <!--</repositories>-->
+
     <dependencies>
 
         <dependency>
@@ -57,6 +71,18 @@
             <artifactId>hive-exec</artifactId>
             <version>1.2.1</version>
         </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.apache.hbase</groupId>-->
+        <!--<artifactId>hbase-client</artifactId>-->
+        <!--<version>1.2.0-cdh5.13.2</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>org.apache.hbase</groupId>-->
+        <!--<artifactId>hbase-server</artifactId>-->
+        <!--<version>1.2.0-cdh5.13.2</version>-->
+        <!--</dependency>-->
 
     </dependencies>
     <!--打包-->

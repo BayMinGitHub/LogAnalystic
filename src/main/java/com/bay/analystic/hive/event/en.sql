@@ -12,7 +12,7 @@ partitioned by (month int, day int)
 row format delimited fields terminated by '\001';
  
 --加载数据(仅建表后加载一次)
---load data inpath '/ods/month${hiveconf:month}/day${hiveconf:day}' into table ods_logs partition (month='${hiveconf:month}',day='${hiveconf:day}');
+load data inpath '/ods/month${hiveconf:month}/day${hiveconf:day}' into table ods_logs partition (month='${hiveconf:month}',day='${hiveconf:day}');
  
 --创建Hive中的事件表(与Mysql中的对应)
 create table if not exists stats_event (

@@ -9,8 +9,8 @@ import java.io.IOException;
 
 /**
  * @Description: 封装用户模块和浏览器模块中Map和Reduce阶段输出的key的类型
-        * Author by BayMin, Date on 2018/7/27.
-        */
+ * Author by BayMin, Date on 2018/7/27.
+ */
 public class StatsUserDimension extends StatsBaseDimension {
     private StatsCommonDimension statsCommonDimension = new StatsCommonDimension();
     private BrowserDimension browserDimension = new BrowserDimension();

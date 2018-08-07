@@ -60,9 +60,11 @@ public class LocationRunner implements Tool {
         // 初始化mapper类
         // 集群运行时还需要将Jar放入,以便于添加依赖Jar包
         // conf.set("mapred.jar", "target/LogAnalystic-1.0-SNAPSHOT.jar");
-        // addDependencyJars:true是本地提交集群运行,false是本地提交本地运行
+        // addDependencyJars:true是集群运行,false是本地提交本地运行
+        // TableMapReduceUtil.initTableMapperJob(this.getScans(job), LocationMapper.class, StatsLocationDimension.class,
+        //         TextOutputValue.class, job, false);
         TableMapReduceUtil.initTableMapperJob(this.getScans(job), LocationMapper.class, StatsLocationDimension.class,
-                TextOutputValue.class, job, false);
+                TextOutputValue.class, job);
 
         // reducer的设置
         job.setReducerClass(LocationReducer.class);
