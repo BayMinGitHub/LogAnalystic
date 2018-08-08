@@ -1,0 +1,120 @@
+<!--java-hive-sqoop-->
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="lda_hive">
+    <start to="etl_mr"/>
+    <action name="etl_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.fs.hdfs.impl.disable.cache</name>
+                    <value>true</value>
+                </property>
+            </configuration>
+            <main-class>com.bay.etl.mr.tohdfs.LogToHDFSRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="en_hive"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="en_hive">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>/home/logAnalystic/lib/hive-site.xml</job-xml>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <script>/home/logAnalystic/event/en.sql</script>
+            <param>hiveconf:month=08</param>
+            <param>hiveconf:day=01</param>
+        </hive>
+        <ok to="en_sqoop"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="en_sqoop">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <arg>export</arg>
+            <arg>--connect</arg>
+            <arg>jdbc:mysql://hadoop010:3306/result</arg>
+            <arg>--username</arg>
+            <arg>root</arg>
+            <arg>--password</arg>
+            <arg>19950116</arg>
+            <arg>--table</arg>
+            <arg>stats_event</arg>
+            <arg>--export-dir</arg>
+            <arg>hdfs://hadoop010:9000/user/hive/warehouse/loganalystic.db/stats_event</arg>
+            <arg>--input-fields-terminated-by</arg>
+            <arg>\001</arg>
+        </sqoop>
+        <ok to="dp_hive"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="dp_hive">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>/home/logAnalystic/lib/hive-site.xml</job-xml>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <script>/home/logAnalystic/depth/dp.sql</script>
+            <param>hiveconf:month=08</param>
+            <param>hiveconf:day=01</param>
+        </hive>
+        <ok to="dp_sqoop"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="dp_sqoop">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <arg>export</arg>
+            <arg>--connect</arg>
+            <arg>jdbc:mysql://hadoop010:3306/result</arg>
+            <arg>--username</arg>
+            <arg>root</arg>
+            <arg>--password</arg>
+            <arg>19950116</arg>
+            <arg>--table</arg>
+            <arg>stats_view_depth</arg>
+            <arg>--export-dir</arg>
+            <arg>hdfs://hadoop010:9000/user/hive/warehouse/loganalystic.db/stats_view_depth</arg>
+            <arg>--input-fields-terminated-by</arg>
+            <arg>\001</arg>
+        </sqoop>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+     
+    <kill name="fail">
+        <message>Shell action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

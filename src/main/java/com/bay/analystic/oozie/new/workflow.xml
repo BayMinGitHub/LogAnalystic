@@ -1,0 +1,112 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="lda-mr">
+    <start to="etl_mr"/>
+    <action name="etl_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.fs.hdfs.impl.disable.cache</name>
+                    <value>true</value>
+                </property>
+            </configuration>
+            <main-class>com.bay.etl.mr.tohbase.LogToHbaseRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="fk1"/>
+        <error to="fail"/>
+    </action>
+     
+    <fork name="fk1">
+        <path start="nu_mr"/>
+        <path start="au_mr"/>
+        <path start="am_mr"/>
+        <path start="nm_mr"/>
+    </fork>
+     
+    <action name="nu_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.nu.NewUserRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn1"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="au_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.au.ActiveUserRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn1"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="nm_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.nm.NewMemberRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn1"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="am_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.am.ActiveMemberRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn1"/>
+        <error to="fail"/>
+    </action>
+     
+    <join name="jn1" to="fk2"/>
+    <fork name="fk2">
+        <path start="pv_mr"/>
+        <path start="session_mr"/>
+    </fork>
+     
+    <action name="pv_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.pv.PageViewRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn2"/>
+        <error to="fail"/>
+    </action>
+     
+    <action name="session_mr">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <main-class>com.bay.analystic.mr.session.SessionRunner</main-class>
+            <arg>-d</arg>
+            <arg>${run_date}</arg>
+        </java>
+        <ok to="jn2"/>
+        <error to="fail"/>
+    </action>
+     
+    <join name="jn2" to="end"/>
+     
+    <kill name="fail">
+        <message>Java failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

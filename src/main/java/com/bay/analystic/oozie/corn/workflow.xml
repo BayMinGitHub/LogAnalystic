@@ -1,0 +1,27 @@
+<workflow-app name='lda' xmlns="uri:oozie:workflow:0.3">
+    <start to="sub-workflow-lda-mr"/>
+
+    <action name="sub-workflow-lda-mr">
+        <sub-workflow>
+            <app-path>${namenode}/${examplesRoot}/updatemr</app-path>
+            <propagate-configuration/>
+        </sub-workflow>
+        <ok to="sub-workflow-lda-hive"/>
+        <error to="kill"/>
+    </action>
+
+    <action name="sub-workflow-lda-hive">
+        <sub-workflow>
+            <app-path>${namenode}/${examplesRoot}/hive</app-path>
+            <propagate-configuration/>
+        </sub-workflow>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+
+    <kill name="kill">
+        <message>mapreduce failed, error message:${wf:errorMessage(wf:lastErrorNode())}</message>
+    </kill>
+
+    <end name="end"/>
+</workflow-app>
